@@ -23,8 +23,7 @@ def display(image, contour, shape, approx):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def detect_color_shape(image_path, color, shape):
-    image = cv2.imread(image_path)
+def detect_color_shape(image, color, shape):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     print(image[180, 330, :])
