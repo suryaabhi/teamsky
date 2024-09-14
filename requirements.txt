@@ -1,0 +1,5 @@
+opencv-python==4.10.0.84
+adafruit-circuitpython-pca9685==3.4.15
+adafruit-circuitpython-motor==3.4.13
+opencv-contrib-python==4.10.0.84
+Flask-SocketIO==5.3.7
