@@ -1,0 +1,36 @@
+Hello Devs!
+Here is a list of subtasks that you can use to split the work/track your progress!
+Might look like a lot but there is a lot of redundancy in the tasks,
+Additionally we are here to assist!
+
+Pseudo code for flow - Need not be followed strictly, just a guideline:
+While True:
+    make_camera_look_at_floor() [Needs to be written, use servo code from MotorUtils.py internally]
+    marker = run_path_follower() [Defined in PathMoverUtils.py]
+    if marker is [Marker values defined in ARTagUtils.py]:
+            0: MarkerAction.READ_BILLBOARD_1 => 
+                read_billboard_1() [Needs to be defined to return pick/drop object and color]
+            1: MarkerAction.PICK_OBJECT_LEFT =>
+            2: MarkerAction.PICK_OBJECT_RIGHT =>
+                find_and_move_to_object(color, shape, initial_dir) [Needs to be defined, use MotorUtils.py & HSVTester.py]
+                pick_object() [Needs to be defined, use MotorUtils.py]
+            3: MarkerAction.DROP_OBJECT_LEFT =>
+            4: MarkerAction.DROP_OBJECT_RIGHT =>
+                find_and_move_to_object(color, shape, initial_dir) [Defined by you up]
+                drop_object() [Needs to be defined, use MotorUtils.py]
+            5: MarkerAction.READ_BILLBOARD_2 =>
+                read_billboard_2() [Needs to be defined to return lane]
+            6: MarkerAction.EXECUTE_LANE =>
+                execute_lane() [Needs to be defined, use MotorUtils.py]
+            7: MarkerAction.READ_BILLBOARD_3 =>
+                read_billboard_3() [Needs to be defined to return text]
+            8: MarkerAction.WRITE_LETTER =>
+                find_and_move_to_object(color, shape, initial_dir) [Defined by you up]
+                pick_object() [Defined by you up, used to pick pen]
+                write_letter() [Needs to be defined, use MotorUtils.py]
+
+Tasks that can be done in parallel:
+1. read_billboard_1 / read_billboard_2 / read_billboard_3 -> setup Open AI APIs
+2. pick_object_left / pick_object_right / drop_object_left / drop_object_right -> control gripper angle and height
+3. find_and_move_to_object -> detecting obj based on color/shape using openCV then calling MotorUtils to move
+4. write_letter -> WILD CARD CHALLENGE! High bonus for this task!
