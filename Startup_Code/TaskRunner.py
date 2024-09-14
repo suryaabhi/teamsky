@@ -31,13 +31,13 @@ def reset_arms(set_gripper=False):
 
 def make_camera_look_at_floor():
     reset_arms()
-    set_all_servos(120,15)
+    set_all_servos(120,60)
     return
 
 # as soon as bot finds billboard AR marker it stops there and calls a function
 # so we have to go to billboard and look at it and return the image frame
 def find_and_read_billboard():
-    # move straight until distance to billboard is such that whole image can be in frame
+    # move straight until distance to billboard is such that whole image can be in frame?
     # set camera angles to be able to read billboard
     # return frame
     return
@@ -49,10 +49,30 @@ def read_billboard_1():
     pick_color = None #arr[1]
     drop_shape = None #arr[2]
     drop_color = None #arr[3]
+    run_path_follower()
     return
 
 def pick_object_left():
+    # add code to (move forward and then?) turn left (how much rotation?)
+    # move forward to reach point at which object is grabable - use Ultrasonic
+    reset_arms(True)
+    i = 30
+    j = 60
+    k = 90
+    # for ()
+    set_all_servos(125, 180)
+    # is_obj_present -> while loop
+    set_all_servos(137, 180)
+    set_all_servos(137, 180, 55)
     return
+
+def pickObject():
+    set_all_servos(137, 180)
+    sleep(0.5)
+    set_all_servos(137, 180, 55)
+    sleep(2)
+    set_all_servos(120, 180)
+
 
 def pick_object_right():
     return

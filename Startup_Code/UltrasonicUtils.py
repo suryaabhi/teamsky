@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setwarnings(False)
 # GPIO pin numbers for the ultrasonic sensor
 TRIG_PIN = 17  # Equivalent to pin 11
 ECHO_PIN = 27  # Equivalent to pin 13
@@ -25,6 +26,20 @@ def get_distance():
     distance = (pulse_duration * speed_of_sound) / 2
     return distance
 
+#before editing check outlier detection part
+RUNS = 10
+
+def getNormalizedDistance():
+    d = []
+    for i in range(RUNS):
+        d.append(round(get_distance(), 2))
+    
+    d.sort()
+    d = d[2:-2]
+    ret = sum(d) / len(d)
+    print("normalized distance", ret)
+    return ret
+
 
 GPIO.setmode(GPIO.BCM)
 
@@ -34,11 +49,12 @@ GPIO.setup(ECHO_PIN, GPIO.IN)
 GPIO.output(TRIG_PIN, GPIO.LOW)
 
 
-try:
-    while True:
-        distance = get_distance()
-        print("Distance: " + str(distance))
-        time.sleep(0.1)
-except KeyboardInterrupt:
-    print("Program terminated")
-    GPIO.cleanup()
+if __name__ == "__main__":
+    try:
+        while True:
+            distance = get_distance()
+            print("Distance: " + str(distance))
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("Program terminated")
+        GPIO.cleanup()

@@ -5,7 +5,7 @@ from adafruit_motor import motor
 import board
 import busio
 
-DEFAULT_SPEED = 20
+DEFAULT_SPEED = 25
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)

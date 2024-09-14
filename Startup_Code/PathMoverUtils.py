@@ -131,12 +131,14 @@ def get_current_road_node(contour_dict):
 def turn_left():
     move_front_until_clear(True)
     sleep(0.5)
-    front(0.3)
+    front(0.4)
+    sleep(1)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['left'][0] >= 0.1 * box_positions['left']['width'] * box_positions['left']['height']:
             break
         rotate_left(0.1)
+    sleep(1)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['bottom'][0] >= 0.3 * box_positions['bottom']['width'] * box_positions['bottom']['height']:
@@ -147,13 +149,15 @@ def turn_left():
 def turn_right():
     move_front_until_clear(True)
     sleep(0.5)
-    front(0.3)
+    sleep(10)
+    front(0.4)
+    sleep(1)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['right'][0] >= 0.1 * box_positions['right']['width'] * box_positions['right']['height']:
             break
         rotate_right(0.1)
- 
+    sleep(1)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['bottom'][0] >= 0.3 * box_positions['bottom']['width'] * box_positions['bottom']['height']:
@@ -231,7 +235,9 @@ def execute_action(action, angle):
  
  
 def get_contours_from_frame(frame):
+    cv2.imwrite("captured.jpg", frame)
     thresholded_frame = thresholding(frame)
+    cv2.imwrite("processed.jpg", thresholded_frame)
     segments = generate_segments(thresholded_frame)
     contour_dict = process_segments(segments, thresholded_frame)
     return contour_dict
