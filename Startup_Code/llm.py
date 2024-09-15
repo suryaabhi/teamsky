@@ -1,11 +1,13 @@
 import requests
 from numpy import frombuffer
 from numpy import uint8
+import os
 
+# Read api token from .env
+API_TOKEN = os.getenv("CF_API")
 
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/62f65ffc3a4f576c639bd78b4305bb40/ai/run/"
-headers = {"Authorization": "Bearer 20v0QEuLskvG0nSnl7_cyro_3EGS-Agw-fpfyy-s"}
-
+headers = {"Authorization": "Bearer {}".format(API_TOKEN)}
 
 def run(model, image=None, prompt=None):
     input = { "prompt": prompt}
