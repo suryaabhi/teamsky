@@ -66,13 +66,6 @@ def pick_object_left():
     set_all_servos(137, 180, 55)
     return
 
-def pickObject():
-    set_all_servos(137, 180)
-    sleep(0.5)
-    set_all_servos(137, 180, 55)
-    sleep(2)
-    set_all_servos(120, 180)
-
 
 def pick_object_right():
     return
@@ -135,24 +128,24 @@ marker_actions = [MarkerAction.NONE, MarkerAction.READ_BILLBOARD_1, MarkerAction
                   MarkerAction.DROP_OBJECT_LEFT, MarkerAction.DROP_OBJECT_RIGHT, MarkerAction.READ_BILLBOARD_2, 
                   MarkerAction.EXECUTE_LANE,MarkerAction.READ_BILLBOARD_3, MarkerAction.WRITE_LETTER]
 
-if __name__ == '__main__':
-    start = False
+# if __name__ == '__main__':
+#     start = False
     
-    try:
-        while True:
-            if start is False:
-                reset_arms(True)
-                make_camera_look_at_floor() 
-                start = True
-            # Returns when a marker is detected, if image is None, or if any key is pressed
-            runner = run_path_follower()
-            if runner in marker_actions:
-                execute_marker_action(runner)
-                # Run action on detecting the marker
-                break
-            elif runner is None:
-                print("Did not get the frame or Exit on any key press")
-                break
+#     try:
+#         while True:
+#             if start is False:
+#                 reset_arms(True)
+#                 make_camera_look_at_floor() 
+#                 start = True
+#             # Returns when a marker is detected, if image is None, or if any key is pressed
+#             runner = run_path_follower()
+#             if runner in marker_actions:
+#                 execute_marker_action(runner)
+#                 # Run action on detecting the marker
+#                 break
+#             elif runner is None:
+#                 print("Did not get the frame or Exit on any key press")
+#                 break
 
-    except KeyboardInterrupt:
-        stop()
+#     except KeyboardInterrupt:
+#         stop()

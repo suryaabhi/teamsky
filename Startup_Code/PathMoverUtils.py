@@ -149,7 +149,7 @@ def turn_left():
 def turn_right():
     move_front_until_clear(True)
     sleep(0.5)
-    sleep(10)
+    sleep(2)
     front(0.4)
     sleep(1)
     while True:
@@ -274,7 +274,6 @@ def run_path_follower():
         print('Program terminated')
         stop()
         cv2.destroyAllWindows()
- 
  
 if __name__ == '__main__':
     try:
