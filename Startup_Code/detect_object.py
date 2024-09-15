@@ -67,7 +67,7 @@ def detect_color_shape(image, color, shape):
 
         if len(approx) == 4:
             # display(image, contour, shape, approx)
-            shape_detected = "cube"
+            shape_detected = "square"
             cx, cy = get_centroid(contour, image)
         elif len(approx) > 15:
             # display(image, contour, shape, approx)
@@ -95,5 +95,5 @@ if __name__ == "__main__":
     while True:
         time.sleep(1)
         image = get_frame()
-        ret = detect_color_shape(image, "red", "cube")
+        ret = detect_color_shape(image, "red", "square")
         print(ret)
