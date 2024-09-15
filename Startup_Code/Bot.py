@@ -10,31 +10,8 @@ import Utils.MotorUtils as MotorUtils
 
 #TODO define
 DISTANCE_THRESHOLD = 20
-
-def pickObject():
-    MotorUtils.set_all_servos(137, 180)
-    sleep(0.5)
-    MotorUtils.set_all_servos(137, 180, 55)
-    sleep(2)
-    MotorUtils.set_all_servos(120, 180)
-
-
-def rotateInDirection(dir, isSmall):
-    timeToMove = 0.1
-    if isSmall:
-        timeToMove = 0.05
-    if dir == "left":
-        MotorUtils.rotate_left(timeToMove)
-
-    elif dir == "right":
-        MotorUtils.rotate_right(timeToMove)
-
-
-def moveForward():
-    MotorUtils.front(0.1)
-
-def isDistanceReached():
-    return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
+PATH_FINDER_OBJECT_COLOR = "orange"
+PATH_FINDER_OBJECT_SHAPE = "circle"
 
 class Bot:
     def __init__(self):
@@ -42,7 +19,35 @@ class Bot:
         self.pick_shape = None
         self.drop_color = None
         self.drop_shape = None
+
+        self.intersection_answer = None
+
+        self.draw_answer = None
         pass
+
+    def __rotateInDirection(self, dir, isSmall):
+        timeToMove = 0.1
+        if isSmall:
+            timeToMove = 0.05
+        if dir == "left":
+            MotorUtils.rotate_left(timeToMove)
+
+        elif dir == "right":
+            MotorUtils.rotate_right(timeToMove)
+    
+
+    def __pickObject(self):
+        MotorUtils.set_all_servos(137, 180)
+        sleep(0.5)
+        MotorUtils.set_all_servos(137, 180, 55)
+        sleep(2)
+        MotorUtils.set_all_servos(120, 180)
+
+    def __moveForward(self):
+        MotorUtils.front(0.1)
+
+    def __isDistanceReached(self):
+        return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
 
     def read_billboard_1(self):
         self.pick_color = "red"
@@ -50,19 +55,30 @@ class Bot:
         self.drop_color = "blue"
         self.drop_shape = "square"
         pass
+    
+    def read_billboard_2(self):
+        self.intersection_answer = "left"
+        pass
+    
+    def read_billboard_3(self):
+        self.draw_answer = "3C"
+        pass
 
-    def look_at_line(self):
+    def __look_at_line(self):
         ServoUtils.make_camera_look_at_floor()
 
     def follow_line(self):
-        self.look_at_line()
+        self.__look_at_line()
         sleep(0.5)
         aruco = run_path_follower()
         return aruco
-    
+
     def find_way_back_to_path(self):
+        self.__seek_pathfinder_object()
+        self.__find_line()
+        self.follow_line()
         pass
-    
+
     def move_to_answer_path(self):
         pass
 
@@ -80,15 +96,15 @@ class Bot:
 
             if not present or (present and dir != "center"):
                 if not present:
-                    rotateInDirection(rotate_direction, False)
+                    self.__rotateInDirection(rotate_direction, False)
                 else:
-                    rotateInDirection(dir, True)
+                    self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not isDistanceReached() :
-                    moveForward()
+                if not self.__isDistanceReached() :
+                    self.__moveForward()
                 else:
-                    pickObject()
+                    self.__pickObject()
                     break
 
     def seek_and_drop_object(self, rotate_direction):
@@ -106,25 +122,17 @@ class Bot:
 
             if not present or (present and dir != "center"):
                 if not present:
-                    rotateInDirection(rotate_direction, False)
+                    self.__rotateInDirection(rotate_direction, False)
                 else:
-                    rotateInDirection(dir, True)
+                    self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not isDistanceReached():
-                    moveForward()
+                if not self.__isDistanceReached():
+                    self.__moveForward()
                 else:
                     MotorUtils.set_all_servos(137, 180, 55)
                     sleep(2)
                     MotorUtils.set_all_servos(120, 180)
                     break
 
-    def read_billboard_3(self):
-        pass
-    
-    def read_billboard_2(self):
-        pass
-    
-    def read_billboard_1(self):
-        pass
     
