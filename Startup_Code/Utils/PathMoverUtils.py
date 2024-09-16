@@ -273,6 +273,23 @@ def run_path_follower():
         print('Program terminated')
         stop()
         cv2.destroyAllWindows()
+
+
+def is_path_found():
+    global box_positions
+    if not box_positions:
+        box_positions = load_positions_from_file()
+
+    frame = get_frame()
+    if (frame is None):
+        return False
+
+    action, deg = get_current_road_node(get_contours_from_frame(frame))
+    print(action, deg)
+
+    return action != "deadend"
+
+
  
 if __name__ == '__main__':
     try:

@@ -1,7 +1,7 @@
 from detect_object import detect_color_shape
 from time import sleep
 
-from Utils.PathMoverUtils import run_path_follower
+from Utils.PathMoverUtils import run_path_follower, is_path_found
 
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
@@ -65,10 +65,14 @@ class Bot:
         if dir == "right":
             return "left"
         return "right"
+    
+    def searchPath(self):
+        self.__look_at_line()
+        return is_path_found()
 
 
-    def __moveForward(self):
-        MotorUtils.front(0.1)
+    def __moveForward(self, speed=0.1):
+        MotorUtils.front(speed)
 
     def __moveBackward(self):
         MotorUtils.back(0.3)
@@ -104,19 +108,24 @@ class Bot:
         return aruco
 
     def find_way_back_to_path(self):
-        self.__look_at_return_marker()
 
         while True:
+            self.__look_at_return_marker()
             present, dir = detect_color_shape()
 
             if not present or (present and dir != "center"):
                 if not present:
                     self.__rotateInDirection(rotate_direction, False)
+                    sleep(0.2)
                 else:
                     self.__rotateInDirection(dir, True)
+                    sleep(0.2)
                 continue
             else:
-                
+                self.__moveForward(0.3)
+                if self.searchPath():
+                    return
+
 
         
 
