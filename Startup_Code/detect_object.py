@@ -27,13 +27,13 @@ def display(image, contour, shape, approx):
 
 def detect_color_shape(image, color, shape, marker):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
+    # rgb -> bgr
     if color == "green":
         color_bgr = np.uint8([[[15,  164, 114]]])
-    if color == "blue":
+    if color == "red":
         color_bgr = np.uint8([[[181,  41, 37]]])
         # color_bgr = np.uint8([[[238,  181, 58]]])
-    if color == "red":
+    if color == "blue":
         color_bgr = np.uint8([[[0,  114, 171]]])
     if color == "orange":
         color_bgr = np.uint8([[[0,  165, 255]]])
