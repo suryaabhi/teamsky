@@ -8,6 +8,11 @@ import Utils.ImageUtils as ImageUtils
 import Utils.UltrasonicUtils as UltrasonicUtils
 import Utils.MotorUtils as MotorUtils
 
+# driver to test code 
+def detect_return_marker():
+    pass
+
+
 #TODO define
 DISTANCE_THRESHOLD = 20
 PATH_FINDER_OBJECT_COLOR = "orange"
@@ -40,7 +45,8 @@ class Bot:
         sleep(0.5)
         MotorUtils.set_all_servos(137, 180, 55)
         sleep(2)
-        MotorUtils.set_all_servos(120, 180)
+        #earlier it was 120
+        MotorUtils.set_all_servos(90, 180)
      
 
             
@@ -55,10 +61,17 @@ class Bot:
         sleep(1)
         MotorUtils.set_all_servos(155,180)
 
+    def __oppositeDir(dir):
+        if dir == "right":
+            return "left"
+        return "right"
 
 
     def __moveForward(self):
         MotorUtils.front(0.1)
+
+    def __moveBackward(self):
+        MotorUtils.back(0.3)
 
     def __isDistanceReached(self):
         return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
@@ -81,6 +94,9 @@ class Bot:
     def __look_at_line(self):
         ServoUtils.make_camera_look_at_floor()
 
+    def __look_at_return_marker():
+        pass
+
     def follow_line(self):
         self.__look_at_line()
         sleep(0.5)
@@ -88,10 +104,21 @@ class Bot:
         return aruco
 
     def find_way_back_to_path(self):
-        self.__seek_pathfinder_object()
-        self.__find_line()
-        self.follow_line()
-        pass
+        self.__look_at_return_marker()
+
+        while True:
+            present, dir = detect_color_shape()
+
+            if not present or (present and dir != "center"):
+                if not present:
+                    self.__rotateInDirection(rotate_direction, False)
+                else:
+                    self.__rotateInDirection(dir, True)
+                continue
+            else:
+                
+
+        
 
     def move_to_answer_path(self):
         pass
@@ -119,6 +146,10 @@ class Bot:
                     self.__moveForward()
                 else:
                     self.__pickObject()
+                    sleep(1)
+                    self.__moveBackward()
+                    sleep(1)
+                    self.__rotateInDirection( self.__oppositeDir(rotate_direction) , False )
                     break
 
     def seek_and_drop_object(self, rotate_direction):

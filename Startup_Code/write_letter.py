@@ -1,55 +1,46 @@
-from MotorUtils import move, stop, DEFAULT_SPEED
+from Utils.MotorUtils import move, stop, DEFAULT_SPEED
 from time import sleep
-from MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop, diagonal_back_left, diagonal_back_right, diagonal_front_left, diagonal_front_right
+from Utils.MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop, diagonal_back_left, diagonal_back_right, diagonal_front_left, diagonal_front_right
 
 def front_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        front(time, speed)
+    num = num/4
+    front(num, speed)
     
 def back_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        back(time, speed)
-        sleep(0.5)
-    
+    num = num/4
+    back(num, speed)
+
 def rotate_left_(num=1, time=None, speed=DEFAULT_SPEED):
-   for _ in num:
-        rotate_left(time, speed)
-        sleep(0.5)
+    num = num/4
+    rotate_left(num, speed)
 
 def rotate_right_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        rotate_right(time, speed)
-        sleep(0.5)
+    num = num/4
+    rotate_right(num, speed)
 
 def strafe_left_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        strafe_left(time, speed)
-        sleep(0.5)
+    num = num/4
+    strafe_left(num, speed)
 
 def strafe_right_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        strafe_right(time, speed)
-        sleep(0.5)
+    num = num/4
+    strafe_right(num, speed)
 
 def diagonal_front_left_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        diagonal_front_left(time, speed)
-        sleep(0.5)
+    num = num/4
+    diagonal_front_left(num, speed)
 
 def diagonal_front_right_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        diagonal_front_right(time, speed)
-        sleep(0.5)
+    num = num/4
+    diagonal_front_right(num, speed)
 
 def diagonal_back_left_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        diagonal_back_left(time, speed)
-        sleep(0.5)
+    num = num/4
+    diagonal_back_left(num, speed)
         
 def diagonal_back_right_(num=1, time=None, speed=DEFAULT_SPEED):
-    for _ in num:
-        diagonal_back_right(time, speed)
-        sleep(0.5)
+    num = num/4
+    diagonal_back_right(num, speed)
 
 def movement():
     mov_dict = {
@@ -104,9 +95,9 @@ def write_letter(letter, movements):
 if __name__ == "__main__":
     movements_dict = movement()
     # Example usage
-    movements_dict["forward"](2)
+    # movements_dict["diagonal_front_left"](4)
     # movements_dict["backward"](2)
-    # movements_dict["strafe_left"](2)
+    movements_dict["strafe_left"](4)
     # movements_dict["strafe_right"](2)
     # movements_dict["strafe_right"](2)
     # movements_dict["rotate_left"](2)
