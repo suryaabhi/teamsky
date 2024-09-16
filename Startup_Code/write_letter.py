@@ -42,6 +42,12 @@ def diagonal_back_right_(num=1, time=None, speed=DEFAULT_SPEED):
     num = num/4
     diagonal_back_right(num, speed)
 
+def up_(num=1, time=None, speed=DEFAULT_SPEED):
+    pass
+
+def down_(num=1, time=None, speed=DEFAULT_SPEED):
+    pass
+
 def movement():
     mov_dict = {
         "forward": front_,
@@ -53,25 +59,28 @@ def movement():
         "diagonal_front_left": diagonal_back_left_,
         "diagonal_front_right": diagonal_back_right_,
         "diagonal_back_left": diagonal_back_left_,
-        "diagonal_back_right": diagonal_back_right_
+        "diagonal_back_right": diagonal_back_right_,
+        "up": up_,
+        "down": down_,
         }
     return mov_dict
 
-def write_letter(letter, movements):
+def write_letter(letter, movements, k = 1 , gap = 1):
+    gap = gap*k
     letter_movements = {
-        'a': [("diagonal_front_right", 4), ("diagonal_back_right", 4), ("diagonal_front_left", 2), ("strafe_left", 2)],
-        'b': [("forward", 4), ("strafe_right", 2), ("backward", 2), ("strafe_left", 2), ("strafe_right", 2), ("backward", 2), ("strafe_left", 2)],
-        'c': [("strafe_left", 2), ("forward", 4), ("strafe_right", 2)],
-        'd': [("forward", 4), ("strafe_right", 2), ("backward", 4), ("strafe_left", 2)],
-        'e': [("strafe_left", 2), ("forward", 2), ("strafe_right", 2), ("strafe_left", 2), ("forward", 2), ("strafe_right", 2)],
-        'f': [("forward", 2), ("strafe_right", 2), ("strafe_left", 2), ("forward", 2), ("strafe_right", 2)],
-        'g': [("forward", 2), ("strafe_right", 1), ("strafe_left", 1), ("backward", 1), ("strafe_left", 2), ("forward", 2), ("strafe_right", 2)],
-        'h': [("forward", 4), ("backward", 2), ("strafe_right", 2), ("backward", 2), ("forward", 4)],
-        'i': [("strafe_right", 2), ("strafe_left", 1), ("forward", 4), ("strafe_right", 1), ("strafe_left", 2)],
-        'j': [("backward", 2), ("strafe_rigth", 2), ("forward", 4), ("strafe_left", 2), ("strafe_left", 4)],
-        'k': [("forward", 4), ("backward", 2), ("diagonal_back_right", 2), ("diagonal_front_left", 2), ("diagonal_front_right", 2)],
-        'l': [("strafe_left", 2), ("forward", 4)],
-        'm': [("forward", 4), ("diagonal_back_right", 2), ("diagonal_front_right", 2), ("backward", 4)],
+        'a': [("down", 1), ("diagonal_front_right", 4*k), ("diagonal_back_right", 4*k), ("diagonal_front_left", 2*k), ("strafe_left", 2.828*k), ("up", 1), ("strafe_right", 2.828*k), ("diagonal_back_right", 2*k), ("strafe_right", 2*k)],
+        'b': [("down", 1), ("forward", 4*k), ("strafe_right", 2*k), ("backward", 2*k), ("strafe_left", 2*k), ("strafe_right", 2*k), ("backward", 2*k), ("strafe_left", 2*k), ("up", 1), ("strafe_right", 4*k)],
+        'c': [("strafe_right", 2*k), ("down", 1), ("strafe_left", 2*k), ("forward", 4*k), ("strafe_right", 2*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
+        'd': [("down", 1), ("forward", 4*k), ("strafe_right", 2*k), ("backward", 4*k), ("strafe_left", 2*k), ("up", 1), ("strafe_right", 4*k)],
+        'e': [("strafe_right", 2*k), ("down", 1), ("strafe_left", 2*k), ("forward", 2*k), ("strafe_right", 2*k), ("strafe_left", 2*k), ("forward", 2*k), ("strafe_right", 2*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
+        'f': [("down", 1), ("forward", 2*k), ("strafe_right", 2*k), ("strafe_left", 2*k), ("forward", 2*k), ("strafe_right", 2*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
+        'g': [("down", 1), ("forward", 4*k), ("strafe_right", 2*k), ("strafe_left", 2*k), ("backward", 4*k), ("strafe_right", 2*k), ("forward", 2*k), ("strafe_left", k), ("up", 1), ("backward", 2*k), ("strafe_right", 3*k)],
+        'h': [("down", 1), ("forward", 4*k), ("backward", 2*k), ("strafe_right", 2*k), ("forward", 2*k), ("backward", 4*k), ("up", 1), ("strafe_right", 2*k)],
+        'i': [("down", 1), ("strafe_right", 2*k), ("strafe_left", 1*k), ("forward", 4*k), ("strafe_left", 1*k), ("strafe_right", 2*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
+        'j': [("forward", 2*k), ("down", 1), ("backward", 2*k), ("strafe_rigth", 2*k), ("forward", 4*k), ("strafe_left", 2*k), ("strafe_right", 4*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
+        'k': [("down", 1), ("forward", 4*k), ("backward", 2*k), ("diagonal_front_right", 2.828*k), ("diagonal_back_left", 2.828*k), ("diagonal_back_right", 2.828*k), ("up", 1), ("strafe_right", 2*k)],
+        'l': [("forward", 4*k), ("down", 1), ("backward", 4*k), ("strafe_rigth", 2*k), ("up", 1), ("strafe_right", 2*k)],
+        'm': [("down", 1), ("forward", 4*k), ("diagonal_back_right", 2.828*k), ("diagonal_front_right", 2.828*k), ("backward", 4*k), ("up", 1), ("strafe_right", 2*k)],
         'n': [],
         'o': [],
         'p': [],
