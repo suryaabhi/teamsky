@@ -4,9 +4,10 @@ from Utils.MotorUtils import stop
 
 def Run():
     bot = Bot()
-    while True:
-        bot.follow_line()
-        sleep(5)
+    bot.pickpen()
+    # while True:
+        # bot.follow_line()
+        # sleep(5)
     # # Follow path
     # aruco = Bot.follow_line()
     # # bot stopped at AR marker 0

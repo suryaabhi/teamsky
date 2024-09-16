@@ -34,7 +34,6 @@ class Bot:
 
         elif dir == "right":
             MotorUtils.rotate_right(timeToMove)
-    
 
     def __pickObject(self):
         MotorUtils.set_all_servos(137, 180)
@@ -42,6 +41,21 @@ class Bot:
         MotorUtils.set_all_servos(137, 180, 55)
         sleep(2)
         MotorUtils.set_all_servos(120, 180)
+     
+
+            
+    def pickpen(self):
+        MotorUtils.set_all_servos(137, 180)
+        sleep(0.5)
+        MotorUtils.set_all_servos(137, 180, 55)
+        sleep(2)
+        MotorUtils.set_all_servos(120, 180)
+        sleep(2)
+        MotorUtils.set_all_servos(120,180,40)
+        sleep(1)
+        MotorUtils.set_all_servos(155,180)
+
+
 
     def __moveForward(self):
         MotorUtils.front(0.1)
