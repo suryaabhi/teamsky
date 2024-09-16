@@ -47,7 +47,7 @@ def detect_color_shape(image, color, shape):
     # cv2.destroyAllWindows()
 
     blurred_mask = cv2.GaussianBlur(mask, (7, 7), 0)
-    # cv2.imshow('mask', blurred_mask)
+    # cv2.imshow('blurred mask', blurred_mask)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
 
@@ -60,18 +60,18 @@ def detect_color_shape(image, color, shape):
         if area < 800:
             continue
 
-        approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
+        approx = cv2.approxPolyDP(contour, (0.01 if shape=="circle" else 0.1) * cv2.arcLength(contour, True), True)
         cx, cy = None, None
-        # print(len(approx))
+        print(len(approx))
 
         if len(approx) == 4:
             shape_detected = "square"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
         elif len(approx) > 13:
-            # display(image, contour, shape_detected, approx)
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
+            # display(image, contour, shape_detected, approx)
         if shape == shape_detected:
             print("*********" , color, " " , shape, " shape detected", "*********")
         else:
