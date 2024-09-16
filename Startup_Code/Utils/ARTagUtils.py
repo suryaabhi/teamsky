@@ -3,7 +3,7 @@ import cv2
 import cv2.aruco as aruco
 from BoxPositionsTester import get_frame
 from time import sleep
-from ImageUtils import DEBUG
+from Utils.ImageUtils import DEBUG
 
 
 class MarkerAction(Enum):

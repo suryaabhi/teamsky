@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
 from time import sleep
-from ARTagUtils import detect_aruco_markers, MarkerAction
-from ImageUtils import get_frame, IMG_WIDTH, IMG_HEIGHT, FRAME_MODE
+from Utils.ARTagUtils import detect_aruco_markers, MarkerAction
+from Utils.ImageUtils import get_frame, IMG_WIDTH, IMG_HEIGHT, FRAME_MODE
 from BoxPositionsTester import NUM_BOXES, load_positions_from_file, generate_segments, display_image_with_segments
 if (FRAME_MODE == 1):  # Camera mode, running on Pi
-    from MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop
+    from Utils.MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop
 box_positions = None
 # Image Processing Constants
 GAUSSIAN_BLUR_PIXEL_SIZE = 5
@@ -131,8 +131,8 @@ def get_current_road_node(contour_dict):
 def turn_left():
     move_front_until_clear(True)
     sleep(0.5)
-    front(0.4)
-    sleep(1)
+    front(0.1)
+    sleep(0.5)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['left'][0] >= 0.1 * box_positions['left']['width'] * box_positions['left']['height']:
@@ -149,9 +149,8 @@ def turn_left():
 def turn_right():
     move_front_until_clear(True)
     sleep(0.5)
-    sleep(2)
-    front(0.4)
-    sleep(1)
+    front(0.3)
+    sleep(0.5)
     while True:
         contour_dict = get_contours_from_frame(get_frame())
         if contour_dict['right'][0] >= 0.1 * box_positions['right']['width'] * box_positions['right']['height']:

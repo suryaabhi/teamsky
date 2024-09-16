@@ -4,7 +4,7 @@
 import cv2
 import numpy as np
 from time import sleep
-from ImageUtils import get_frame, IMG_WIDTH, IMG_HEIGHT, FRAME_MODE, DEBUG
+from Utils.ImageUtils import get_frame, IMG_WIDTH, IMG_HEIGHT, FRAME_MODE, DEBUG
 import json
 
 SEC_BOX_DIMN = 80  # Default dimension for secondary boxes

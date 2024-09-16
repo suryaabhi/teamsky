@@ -9,7 +9,7 @@ You should be able to import functions and use in your own code.
 --- YOU NEED TO CREATE A NEW PY FILE TO ACHIEVE THE FOLLOWING  ---
 
 While True:
-    make_camera_look_at_floor() [Needs to be written, use servo code from MotorUtils.py internally]
+    make_camera_look_at_floor() [Needs to be written, use servo code from Utils.MotorUtils.py internally]
     marker = run_path_follower() [run_path_follower runs bot on track and returns on detecting marker. Defined in PathMoverUtils.py]
     if marker is [Marker values defined in ARTagUtils.py]:
             0: MarkerAction.READ_BILLBOARD_1 => 

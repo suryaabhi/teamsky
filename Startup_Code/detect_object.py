@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from ImageUtils import get_frame
+from Utils.ImageUtils import get_frame
 import time
 
 def get_centroid(i, image):

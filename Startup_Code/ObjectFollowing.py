@@ -1,6 +1,6 @@
 
 from UltrasonicUtils import getNormalizedDistance
-from MotorUtils import front, rotate_left, rotate_right, set_all_servos
+from Utils.MotorUtils import front, rotate_left, rotate_right, set_all_servos
 from time import sleep
 from ImageUtils import get_frame
 from detect_object import detect_color_shape

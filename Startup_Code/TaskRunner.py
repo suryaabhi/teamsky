@@ -5,8 +5,8 @@ from ARTagUtils import detect_aruco_markers, MarkerAction
 from ImageUtils import get_frame, IMG_WIDTH, IMG_HEIGHT, FRAME_MODE
 from BoxPositionsTester import NUM_BOXES, load_positions_from_file, generate_segments, display_image_with_segments
 if (FRAME_MODE == 1):  # Camera mode, running on Pi
-    from MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop
-from MotorUtils import *
+    from Utils.MotorUtils import front, rotate_right, rotate_left, back, strafe_left, strafe_right, stop
+from Utils.MotorUtils import *
 from PathMoverUtils import run_path_follower
 
 # Distance between AR to bill board -> 30 - 40 cm
