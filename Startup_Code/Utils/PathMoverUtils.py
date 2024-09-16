@@ -206,7 +206,7 @@ def rotate_right_until_road_found():
         if contour_dict['bottom'][0] >= 0.3 * box_positions['bottom']['width'] * box_positions['bottom']['height']:
             break
         rotate_right(0.1)
- 
+
  
 def execute_action(action, angle):
     match action:
