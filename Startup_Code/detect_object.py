@@ -25,23 +25,20 @@ def display(image, contour, shape, approx):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def detect_color_shape(image, color, shape):
+def detect_color_shape(image, color, shape, marker):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    # cv2.imshow('Image', hsv)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-
-    # print(image[180, 330, :])
     if color == "green":
-        color_grb = np.uint8([[[15,  164, 114]]])
+        color_bgr = np.uint8([[[15,  164, 114]]])
     if color == "blue":
-        color_grb = np.uint8([[[181,  41, 37]]])
-        # color_grb = np.uint8([[[238,  181, 58]]])
+        color_bgr = np.uint8([[[181,  41, 37]]])
+        # color_bgr = np.uint8([[[238,  181, 58]]])
     if color == "red":
-        color_grb = np.uint8([[[0,  114, 171]]])
+        color_bgr = np.uint8([[[0,  114, 171]]])
+    if color == "orange":
+        color_bgr = np.uint8([[[0,  165, 255]]])
 
-    hsv_ = cv2.cvtColor(color_grb, cv2.COLOR_BGR2HSV)
+    hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
     lower = np.array([hsv_[0][0][0] - 10, 100, 100])
     upper = np.array([hsv_[0][0][0] + 10, 255, 255])
 
@@ -49,7 +46,6 @@ def detect_color_shape(image, color, shape):
     # cv2.imshow('mask', mask)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
-
 
     blurred_mask = cv2.GaussianBlur(mask, (7, 7), 0)
     smoothed_image = cv2.bitwise_and(image, image, mask=blurred_mask)
@@ -62,7 +58,6 @@ def detect_color_shape(image, color, shape):
             continue
 
         approx = cv2.approxPolyDP(contour, 0.1 * cv2.arcLength(contour, True), True)
-       
         cx, cy = None, None
 
         if len(approx) == 4:
@@ -74,9 +69,9 @@ def detect_color_shape(image, color, shape):
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
         if shape == shape_detected:
-            print("*********" , color, "" , shape_detected, " shape detected", "*********")
+            print("*********" , color, " " , shape_detected, " shape detected", "*********")
         else:
-            print("*********" , color, "" , shape_detected, " shape not detected", "*********")
+            print("*********" , color, " " , shape_detected, " shape not detected", "*********")
         if cx is not None and cy is not None:
             delta = 20
             right = 320 + delta
@@ -87,13 +82,12 @@ def detect_color_shape(image, color, shape):
                 return (True, "right")
             elif cx < left:
                 return (True, "left")      
-            
         return (False, "")
-    return (False, "")
 
 if __name__ == "__main__":
+    marker = False
     while True:
         time.sleep(1)
         image = get_frame()
         ret = detect_color_shape(image, "red", "square")
-        print(ret)
+        print("Detected color and shape: ", ret)
