@@ -5,22 +5,20 @@ from numpy import uint8
 import os
 import cv2
 from Utils.ImageUtils import get_frame
+import base64
 
 # Read api token from .env
-API_TOKEN = "WpgYNrsZA3PeCtt1vpdsJQ8YQORMaAazYPm3dKRB"
-DEBUG = True
+API_TOKEN = os.getenv("AZ_API")
+DEBUG = os.getenv("DEBUG") == "True"
 
-API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/62f65ffc3a4f576c639bd78b4305bb40/ai/run/"
-headers = {"Authorization": f"Bearer {API_TOKEN}"}
+API_BASE_URL = "https://roborumble-teamsky-2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview"
+headers = {"api-key": API_TOKEN}
 
-def __callAzureOpenAI(model, image=None, prompt=None):
-    input = { "prompt": prompt }
+def __encode_image(image):
+    return base64.b64encode(image).decode("utf-8")
 
-    input["image"] = image
-    input["max_tokens"] = 100
-
-    # print(input)
-    response = requests.post(f"{API_BASE_URL}{model}", headers=headers, json=input)
+def __callAzureOpenAI(payload):
+    response = requests.post(API_BASE_URL, headers=headers, json=payload)
     return response.json()
 
 def __output_processor_bb1(oj):
@@ -97,29 +95,41 @@ def __output_processor_bb3(oj):
     return answer
 
 def send_to_llm_bb1(image):
-    image = frombuffer(image, uint8)
-    image = image.tolist()
-    
-    prompt = """
-    you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object.
-    example response: pick red square | drop blue square
-    example response: pick green circle | drop yellow square
-    example response: pick red circle | drop blue circle
-    now you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples"""
+    payload = {
+        "messages": [
+            {
+                "role": "system",
+                "content": """you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object. There are 2 types of shapes (circle, square) and 3 types of colours (red, green, blue).
+                example response: pick red square | drop blue square
+                example response: pick green circle | drop red square
+                example response: pick red circle | drop blue circle
+                now you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples"""
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{image}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
+    }
 
-    output = __callAzureOpenAI("@cf/llava-hf/llava-1.5-7b-hf", image, prompt)
-
-    print(output)
+    output = __callAzureOpenAI(payload)
     
     if not output["success"]:
         print(f"API error {output['error']}")
         return None
-    
 
-    print(output)
-    print(output["result"])
+    airesponse = output.json()["choices"][0]["message"]["content"]
+    print(airesponse)
 
-    return __output_processor_bb1(output)
+    return __output_processor_bb1(airesponse)
 
 
 def send_to_llm_bb2(image):
@@ -169,7 +179,6 @@ def send_to_llm_bb3(image):
     return __output_processor_bb3(output)
 
 if __name__ == "__main__":
-    image = open("~/Downloads/output.jpg", "rb").read()
+    image = open("~/Downloads/billboardsampless/1.png", "rb").read()
     print(send_to_llm_bb1(image))
     pass
-
