@@ -57,7 +57,7 @@ class Bot:
         sleep(1)
         MotorUtils.set_all_servos(155,180)
 
-    def __oppositeDir(self, dir):
+    def oppositeDir(self, dir):
         if dir == "right":
             return "left"
         return "right"
@@ -174,7 +174,7 @@ class Bot:
                     sleep(1)
                     self.__moveBackward()
                     sleep(1)
-                    self.__rotateInDirection( self.__oppositeDir(rotate_direction) , False )
+                    self.__rotateInDirection( self.oppositeDir(rotate_direction) , False )
                     break
 
     def seek_and_drop_object(self, rotate_direction):
@@ -201,7 +201,7 @@ class Bot:
                     self.__dropObject()
                     self.__moveBackward()
                     sleep(1)
-                    self.__rotateInDirection( self.__oppositeDir(rotate_direction) , False )
+                    self.__rotateInDirection( self.oppositeDir(rotate_direction) , False )
                     break
 
     
