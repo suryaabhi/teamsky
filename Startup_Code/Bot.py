@@ -1,4 +1,4 @@
-from detect_object import detect_color_shape
+from detect_object_new import detect_color_shape
 from time import sleep
 import cv2
 from Utils.PathMoverUtils import run_path_follower, is_path_found
@@ -131,7 +131,7 @@ class Bot:
         self.__look_at_return_marker()
         while True:
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "red", "square")
+            present, dir = detect_color_shape(image, "blue", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
