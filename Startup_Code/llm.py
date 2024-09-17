@@ -3,10 +3,12 @@ import requests
 from numpy import frombuffer
 from numpy import uint8
 import os
+import cv2
+from Utils.ImageUtils import get_frame
 
 # Read api token from .env
-API_TOKEN = os.getenv("CF_API")
-DEBUG = os.getenv("DEBUG") == "True"
+API_TOKEN = "WpgYNrsZA3PeCtt1vpdsJQ8YQORMaAazYPm3dKRB"
+DEBUG = True
 
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/62f65ffc3a4f576c639bd78b4305bb40/ai/run/"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
@@ -14,7 +16,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 def __callAzureOpenAI(model, image=None, prompt=None):
     input = { "prompt": prompt }
 
-    input["images"] = image
+    input["image"] = image
     input["max_tokens"] = 100
 
     # print(input)
@@ -22,8 +24,10 @@ def __callAzureOpenAI(model, image=None, prompt=None):
     return response.json()
 
 def __output_processor_bb1(oj):
-    if DEBUG:
-        print(oj["result"])
+
+    print(oj)
+    print(oj["result"])
+
     answer = {}
     res = oj["result"]["description"].lower()
     if len(res.split()) == 7:
@@ -96,17 +100,19 @@ def send_to_llm_bb1(image):
     image = frombuffer(image, uint8)
     image = image.tolist()
     
-    prompt = "you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object. example response: \npick red square | drop blue circle\nexample response:\npick green circle | drop yellow square\nexample response:\npick red circle | drop blue circle\nexample response:\nnow you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples" 
+    prompt = "you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object. example response: \npick red square | drop blue square\nexample response:\npick green circle | drop yellow square\nexample response:\npick red circle | drop blue circle\nexample response:\nnow you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples" 
 
     output = __callAzureOpenAI("@cf/llava-hf/llava-1.5-7b-hf", image, prompt)
+
+    print(output)
     
     if not output["success"]:
-        print(f"API error {output["error"]}")
+        print(f"API error {output['error']}")
         return None
     
-    if DEBUG:
-        print(output)
-        print(output["result"])
+    
+    print(output)
+    print(output["result"])
 
     return __output_processor_bb1(output)
 
@@ -158,3 +164,8 @@ def send_to_llm_bb3(image):
         print(output["result"])
 
     return __output_processor_bb3(output)
+
+if __name__ == "__main__":
+    image = open("./output.jpg", "rb").read()
+    ret = send_to_llm_bb1(image)
+    print(ret)
