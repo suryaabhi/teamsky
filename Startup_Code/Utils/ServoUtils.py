@@ -14,6 +14,7 @@ LINE_FOLLOW_MAIN_ARM = 90
 LINE_FOLLOW_CAMERA_ARM = 30
 
 def reset_arms(set_gripper=False):
+    print("reset called")
     if set_gripper is True:
         set_all_servos(RESET_MAIN_ARM, RESET_CAMERA_ARM, RESET_GRIPPER_ARM)
     else:
@@ -23,6 +24,7 @@ def reset_arms(set_gripper=False):
 
 def make_camera_look_at_floor():
     set_all_servos(LINE_FOLLOW_MAIN_ARM, LINE_FOLLOW_CAMERA_ARM)
+    sleep(1)
     return
 
 

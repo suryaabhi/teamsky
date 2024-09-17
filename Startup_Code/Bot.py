@@ -103,6 +103,7 @@ class Bot:
 
     
     def follow_line(self):
+        ServoUtils.reset_arms()
         self.__look_at_line()
         sleep(0.5)
         aruco = run_path_follower()
@@ -110,10 +111,10 @@ class Bot:
 
     def find_way_back_to_path(self, rotate_direction):
 
+        self.__look_at_return_marker()
         while True:
-            self.__look_at_return_marker()
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "square")
+            present, dir = detect_color_shape(image, "red", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -127,7 +128,7 @@ class Bot:
                 self.__moveForward(0.3)
                 if self.searchPath():
                     return
-
+                self.__look_at_return_marker()
 
         
 
@@ -140,13 +141,13 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        ServoUtils.reset_arms()
+        ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "green", "square")
+            present, dir = detect_color_shape(image, "blue", "square")
 
             if not present or (present and dir != "center"):
                 if not present:

@@ -1,10 +1,12 @@
 from Bot import Bot
 from time import sleep
-from Utils.MotorUtils import stop
+from Utils.MotorUtils import stop,front
 
 def Run():
     bot = Bot()
     bot.follow_line()
+    sleep(2)
+    front(0.4)
     sleep(2)
     bot.seek_and_pick_object("left")
     sleep(2)
