@@ -61,7 +61,7 @@ class Bot:
         sleep(1)
         MotorUtils.set_all_servos(155,180)
 
-    def __oppositeDir(dir):
+    def __oppositeDir(self, dir):
         if dir == "right":
             return "left"
         return "right"
@@ -98,20 +98,22 @@ class Bot:
     def __look_at_line(self):
         ServoUtils.make_camera_look_at_floor()
 
-    def __look_at_return_marker():
-        pass
+    def __look_at_return_marker(self):
+        ServoUtils.make_camera_look_at_object()
 
+    
     def follow_line(self):
         self.__look_at_line()
         sleep(0.5)
         aruco = run_path_follower()
         return aruco
 
-    def find_way_back_to_path(self):
+    def find_way_back_to_path(self, rotate_direction):
 
         while True:
             self.__look_at_return_marker()
-            present, dir = detect_color_shape()
+            image = ImageUtils.get_frame()
+            present, dir = detect_color_shape(image, "blue", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -142,7 +144,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, object_color, object_shape)
+            present, dir = detect_color_shape(image, "green", "square")
 
             if not present or (present and dir != "center"):
                 if not present:

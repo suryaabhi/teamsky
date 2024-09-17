@@ -60,7 +60,7 @@ def detect_color_shape(image, color, shape):
         if area < 800:
             continue
 
-        approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
+        approx = cv2.approxPolyDP(contour, 0.1 * cv2.arcLength(contour, True), True)
         cx, cy = None, None
         # print(len(approx))
 

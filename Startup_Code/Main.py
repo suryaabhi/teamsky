@@ -4,7 +4,11 @@ from Utils.MotorUtils import stop
 
 def Run():
     bot = Bot()
-    bot.find_way_back_to_path()
+    bot.follow_line()
+    sleep(2)
+    bot.seek_and_pick_object("left")
+    sleep(2)
+    bot.find_way_back_to_path("right")
     sleep(1)
     bot.follow_line()
     sleep(5)
