@@ -29,7 +29,7 @@ class Bot:
         self.intersection_answer = None
 
         self.draw_answer = None
-        pass
+        
 
     def __rotateInDirection(self, dir, isSmall):
         timeToMove = 0.1
@@ -68,7 +68,7 @@ class Bot:
         return is_path_found()
 
 
-    def __moveForward(self, speed=0.1):
+    def moveForward(self, speed=0.1):
         MotorUtils.front(speed)
 
     def __moveBackward(self):
@@ -78,15 +78,20 @@ class Bot:
         return distanceSensor.getDistance() <= DISTANCE_THRESHOLD
 
     def read_billboard_1(self):
+        ServoUtils.make_camera_look_at_billboard()
         image = ImageUtils.get_frame()
         llm_resp = llm.send_to_llm_bb1(image)
         print(llm_resp)
         if not llm_resp["found"]:
+            #TODO retry
             return False
         self.pick_color = llm_resp["pick"]["color"]
         self.pick_shape = llm_resp["pick"]["shape"]
         self.drop_color = llm_resp["drop"]["color"]
         self.drop_shape = llm_resp["drop"]["shape"]
+        sleep(0.5)
+        self.moveForward()
+        sleep(0.5)
         return True
     
     def read_billboard_2(self):
@@ -137,7 +142,7 @@ class Bot:
                     sleep(0.2)
                 continue
             else:
-                self.__moveForward(0.3)
+                self.moveForward(0.3)
                 if self.searchPath():
                     return
                 self.__look_at_return_marker()
@@ -171,6 +176,7 @@ class Bot:
             else:
                 if not self.__isDistanceReached(distanceSensor) :
                     self.__moveForward()
+
                 else:
                     self.__pickObject()
                     sleep(1)

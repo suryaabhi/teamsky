@@ -48,6 +48,13 @@ def make_camera_look_at_object():
     set_all_servos(OBJECT_FOLLOW_MAIN_ARM, OBJECT_FOLLOW_CAMERA_ARM)
     sleep(0.5)
 
+def make_camera_look_at_billboard():
+    set_all_servos(60, 90)
+    sleep(1)
+    set_all_servos(READ_BILLBOARD_MAIN_ARM, READ_BILLBOARD_CAMERA_ARM)
+    sleep(0.5)
+
+
 def make_camera_look_at_marker():
     set_all_servos(60, 90)
     sleep(1)
