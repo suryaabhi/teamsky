@@ -1,39 +1,33 @@
 from Bot import Bot
 from time import sleep
 from Utils.MotorUtils import stop,front
+from ArucoProcessor import processAruco
 
 def Run():
     bot = Bot()
-    bot.follow_line()
-    sleep(2)
-    front(0.4)
-    sleep(2)
-    bot.seek_and_pick_object("left")
-    sleep(2)
-    bot.find_way_back_to_path("right")
-    sleep(1)
-    bot.follow_line()
-    sleep(2)
-    bot.seek_and_drop_object("right")
-    sleep(1)
-    bot.find_way_back_to_path("left")
-    sleep(1)
-    bot.follow_line()
-    sleep(2)
+    # bot.follow_line()
+    # sleep(2)
+    # front(0.4)
+    # sleep(2)
+    # bot.seek_and_pick_object("left")
+    # sleep(2)
+    # bot.find_way_back_to_path("right")
+    # sleep(1)
+    # bot.follow_line()
+    # sleep(2)
+    # bot.seek_and_drop_object("right")
+    # sleep(1)
+    # bot.find_way_back_to_path("left")
+    # sleep(1)
+    # bot.follow_line()
+    # sleep(2)
 
-    # # while True:
-    #     # bot.follow_line()
-    #     # sleep(5)
-
-
-    #  ## start here   
-    # # Follow path
-    # aruco = Bot.follow_line()
-    # # bot stopped at AR marker 0
-    # if aruco == 0:
-    #     pass
-    # # Read Billboard 1 which contains pick and drop instructions
-    # Bot.read_billboard_1()
+    while True:
+        aruco = Bot.follow_line()
+        sleep(1)
+        processAruco(bot, aruco)
+    
+    
     # # Follow path
     # aruco = Bot.follow_line()
     # # bot stopped at AR marker 1/2 and turns left/right
