@@ -23,7 +23,7 @@ def Run():
     # sleep(2)
 
     while True:
-        aruco = Bot.follow_line()
+        aruco = bot.follow_line()
         sleep(1)
         processAruco(bot, aruco)
     

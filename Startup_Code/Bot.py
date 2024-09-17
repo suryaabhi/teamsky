@@ -130,7 +130,7 @@ class Bot:
         self.__look_at_return_marker()
         while True:
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "red", "square")
+            present, dir = detect_color_shape(image, "blue", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -163,7 +163,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "square")
+            present, dir = detect_color_shape(image, "green", "circle")
 
             if not present or (present and dir != "center"):
                 if not present:
