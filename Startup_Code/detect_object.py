@@ -71,20 +71,22 @@ def detect_color_shape(image, color, shape):
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
-        if shape == shape_detected:
-            print("*********" , color, " " , shape, " shape detected", "*********")
-        else:
-            print("*********" , color, " " , shape, " shape not detected", "*********")
+        
         if cx is not None and cy is not None:
             delta = 20
             right = 320 + delta
             left = 320 - delta
             if (cx < right) and (cx > left):
+                print("*********" , color, " " , shape, " detected", "in center ",  "*********")
                 return (True, "center")
             if cx > right:
+                print("*********" , color, " " , shape, " detected", "in right ",  "*********")
                 return (True, "right")
             elif cx < left:
-                return (True, "left")      
+                print("*********" , color, " " , shape, " detected", "in left ",  "*********")
+                return (True, "left") 
+            
+    print("*********" , color, " " , shape, " not detected", "*********")
     return (False, "")
 
 if __name__ == "__main__":
