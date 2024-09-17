@@ -1,4 +1,4 @@
-from detect_object import detect_color_shape
+from detect_object_new import detect_color_shape
 from time import sleep
 import cv2
 from Utils.PathMoverUtils import run_path_follower, is_path_found
