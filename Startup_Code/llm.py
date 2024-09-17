@@ -3,9 +3,10 @@ import requests
 from numpy import frombuffer
 from numpy import uint8
 import os
-import cv2
 from Utils.ImageUtils import get_frame
 import base64
+from dotenv import load_dotenv
+load_dotenv()
 
 # Read api token from .env
 API_TOKEN = os.getenv("AZ_API")
