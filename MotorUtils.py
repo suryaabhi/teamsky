@@ -60,7 +60,7 @@ def move_motor(motor, direction, speed=DEFAULT_SPEED):
         set_pin_pwm(motor["in2"], 0)
 
 
-def stop(stop_servos=False):
+def stop(stop_servos=True):
     for motor in motors.values():
         pca.channels[motor["in1"]].duty_cycle = 0
         pca.channels[motor["in2"]].duty_cycle = 0
