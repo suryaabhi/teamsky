@@ -47,7 +47,7 @@ def detect_color_shape(image, color, shape):
 
     mask = cv2.inRange(hsv, lower, upper)
     cv2.imshow('mask', mask)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
     cv2.destroyAllWindows
 
     blurred_mask = cv2.GaussianBlur(mask, (7, 7), 0)
