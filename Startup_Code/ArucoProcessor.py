@@ -1,7 +1,8 @@
 from ARTagUtils import MarkerAction
 from time import sleep
+import Bot
 
-def procssReadBillBoard(bot):
+def procssReadBillBoard(bot: Bot):
     bot.read_billboard_1()
 
 def processPickObject(bot, dir):
@@ -22,8 +23,9 @@ def processAruco(bot, aruco):
     # TODO: add visited 
     match aruco:
         case MarkerAction.READ_BILLBOARD_1:
-            sleep(3)
-            # procssReadBillBoard(bot)
+            # sleep(3)
+            procssReadBillBoard(bot)
+            sleep(2)
         
         case MarkerAction.PICK_OBJECT_RIGHT:
             processPickObject(bot, "right")

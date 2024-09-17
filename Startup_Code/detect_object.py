@@ -100,5 +100,5 @@ if __name__ == "__main__":
     while True:
         time.sleep(1)
         image = get_frame()
-        ret = detect_color_shape(image, "orange", "circle")
+        ret = detect_color_shape(image, "blue", "circle")
         # print("Detected color and shape: ", ret)
