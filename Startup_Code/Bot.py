@@ -140,6 +140,8 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
+        ServoUtils.reset_arms()
+        sleep(2)
         ServoUtils.make_camera_look_at_object()
         while True:
             sleep(0.2)
@@ -170,6 +172,8 @@ class Bot:
         '''
         object_color = self.drop_color
         object_shape = self.drop_shape
+        ServoUtils.reset_arms()
+        sleep(2)
         ServoUtils.make_camera_look_at_object()
         while True:
             sleep(0.2)

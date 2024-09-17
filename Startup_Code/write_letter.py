@@ -68,7 +68,7 @@ def movement():
 def write_letter(letter, movements, k = 1 , gap = 1):
     gap = gap*k
     letter_movements = {
-        'a': [("down", 1), ("diagonal_front_right", 4*k), ("diagonal_back_right", 4*k), ("diagonal_front_left", 2*k), ("strafe_left", 2.828*k), ("up", 1), ("strafe_right", 2.828*k), ("diagonal_back_right", 2*k), ("strafe_right", 2*k)],
+        'a': [("down", 1), ("diagonal_front_right", 5.656*k), ("diagonal_back_right", 5.656*k), ("diagonal_front_left", 2.828*k), ("strafe_left", 4*k), ("up", 1), ("strafe_right", 4*k), ("diagonal_back_right", 2.828*k), ("strafe_right", 2*k)],
         'b': [("down", 1), ("forward", 4*k), ("strafe_right", 2*k), ("backward", 2*k), ("strafe_left", 2*k), ("strafe_right", 2*k), ("backward", 2*k), ("strafe_left", 2*k), ("up", 1), ("strafe_right", 4*k)],
         'c': [("strafe_right", 2*k), ("down", 1), ("strafe_left", 2*k), ("forward", 4*k), ("strafe_right", 2*k), ("up", 1), ("backward", 4*k), ("strafe_right", 2*k)],
         'd': [("down", 1), ("forward", 4*k), ("strafe_right", 2*k), ("backward", 4*k), ("strafe_left", 2*k), ("up", 1), ("strafe_right", 4*k)],
@@ -81,19 +81,19 @@ def write_letter(letter, movements, k = 1 , gap = 1):
         'k': [("down", 1), ("forward", 4*k), ("backward", 2*k), ("diagonal_front_right", 2.828*k), ("diagonal_back_left", 2.828*k), ("diagonal_back_right", 2.828*k), ("up", 1), ("strafe_right", 2*k)],
         'l': [("forward", 4*k), ("down", 1), ("backward", 4*k), ("strafe_rigth", 2*k), ("up", 1), ("strafe_right", 2*k)],
         'm': [("down", 1), ("forward", 4*k), ("diagonal_back_right", 2.828*k), ("diagonal_front_right", 2.828*k), ("backward", 4*k), ("up", 1), ("strafe_right", 2*k)],
-        'n': [],
-        'o': [],
-        'p': [],
-        'q': [],
-        'r': [],
-        's': [],
-        't': [],
-        'u': [],
-        'v': [],
-        'w': [],
-        'x': [],
-        'y': [],
-        'z': []
+        'n': [("down", 1), ("forward", 4*k), ("diagonal_back_right", 5.656*k), ("forward", 4*k), ],
+        'o': [("down", 1), ],
+        'p': [("down", 1), ],
+        'q': [("down", 1), ],
+        'r': [("down", 1), ],
+        's': [("down", 1), ],
+        't': [("down", 1), ],
+        'u': [("down", 1), ],
+        'v': [("down", 1), ],
+        'w': [("down", 1), ],
+        'x': [("down", 1), ],
+        'y': [("down", 1), ],
+        'z': [("down", 1), ]
     }
 
     if letter in letter_movements:
