@@ -5,8 +5,9 @@ from Utils.PathMoverUtils import run_path_follower, is_path_found
 import llm
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
-import Utils.UltrasonicUtils as UltrasonicUtils
+import Utils.UltrasonicUtils as UltrasonicUtils, NormalizedRunningDistance
 import Utils.MotorUtils as MotorUtils
+
 
 # driver to test code 
 def detect_return_marker():
@@ -73,8 +74,8 @@ class Bot:
     def __moveBackward(self):
         MotorUtils.back(0.3)
 
-    def __isDistanceReached(self):
-        return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
+    def __isDistanceReached(self, distanceSensor):
+        return distanceSensor.getDistance() <= DISTANCE_THRESHOLD
 
     def read_billboard_1(self):
         image = ImageUtils.get_frame()
@@ -155,6 +156,7 @@ class Bot:
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
+        distanceSensor = NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -167,7 +169,7 @@ class Bot:
                     self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not self.__isDistanceReached() :
+                if not self.__isDistanceReached(distanceSensor) :
                     self.__moveForward()
                 else:
                     self.__pickObject()
@@ -183,6 +185,7 @@ class Bot:
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()
+        distanceSensor = NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -195,7 +198,7 @@ class Bot:
                     self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not self.__isDistanceReached():
+                if not self.__isDistanceReached(distanceSensor):
                     self.__moveForward()
                 else:
                     self.__dropObject()

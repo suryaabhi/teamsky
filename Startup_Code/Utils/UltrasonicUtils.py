@@ -27,7 +27,7 @@ def get_distance():
     return distance
 
 #before editing check outlier detection part
-RUNS = 10
+RUNS = 30
 
 def getNormalizedDistance():
     d = []
@@ -35,7 +35,7 @@ def getNormalizedDistance():
         d.append(round(get_distance(), 2))
     
     d.sort()
-    d = d[2:-2]
+    d = d[7:-7]
     ret = sum(d) / len(d)
     print("normalized distance", ret)
     return ret
@@ -48,6 +48,22 @@ GPIO.setup(ECHO_PIN, GPIO.IN)
 
 GPIO.output(TRIG_PIN, GPIO.LOW)
 
+WINDOW_SIZE = 30
+from collections import deque
+import numpy as np
+class NormalizedRunningDistance:
+    def __init__(self):
+        self.q = deque(maxlen=WINDOW_SIZE)
+
+    def getDistance(self):
+        while len(self.q) < WINDOW_SIZE:
+            self.q.append(get_distance())
+
+        self.q.append(get_distance())
+        t = self.q[:]
+        t.sort()
+        t = t[12:-12]
+        return np.mean(t)
 
 if __name__ == "__main__":
     try:
