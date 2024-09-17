@@ -60,7 +60,9 @@ class NormalizedRunningDistance:
             self.q.append(get_distance())
 
         self.q.append(get_distance())
-        t = self.q[:]
+        t = []
+        for i in self.q:
+            t.append(i)
         t.sort()
         t = t[12:-12]
         return np.mean(t)

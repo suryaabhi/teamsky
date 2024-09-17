@@ -158,6 +158,8 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
+        object_color = "blue"
+        object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
@@ -165,7 +167,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "square")
+            present, dir = detect_color_shape(image, object_color, object_shape)
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -175,7 +177,7 @@ class Bot:
                 continue
             else:
                 if not self.__isDistanceReached(distanceSensor) :
-                    self.__moveForward()
+                    self.moveForward()
 
                 else:
                     self.__pickObject()
@@ -195,7 +197,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "circle")
+            present, dir = detect_color_shape(image, "green", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -205,10 +207,10 @@ class Bot:
                 continue
             else:
                 if not self.__isDistanceReached(distanceSensor):
-                    self.__moveForward()
+                    self.moveForward()
                 else:
                     self.__dropObject()
-                    self.__moveBackward()
+                    self.moveBackward()
                     sleep(1)
                     self.__rotateInDirection( self.oppositeDir(rotate_direction) , False )
                     break
