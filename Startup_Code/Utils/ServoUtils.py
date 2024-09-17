@@ -8,8 +8,17 @@ RESET_GRIPPER_ARM = 100
 OBJECT_FOLLOW_MAIN_ARM = 95
 OBJECT_FOLLOW_CAMERA_ARM = 135
 
+OBJECT_PICKUP_MAIN_ARM = 137
+OBJECT_PICKUP_CAMERA_ARM = 180
+OBJECT_PICKUP_GRIPPER_ARM = 55
+
+OBJECT_DROP_MAIN_ARM = 137
+OBJECT_DROP_CAMERA_ARM = 150
+OBJECT_DROP_GRIPPER_ARM = 80
+
 MARKER_RETURN_MAIN_ARM = 95
 MARKER_RETURN_CAMERA_ARM =135
+
 LINE_FOLLOW_MAIN_ARM = 90
 LINE_FOLLOW_CAMERA_ARM = 30
 
@@ -40,6 +49,21 @@ def make_camera_look_at_marker():
     set_all_servos(MARKER_RETURN_MAIN_ARM, MARKER_RETURN_CAMERA_ARM)
     sleep(0.5)
 
+def pick_object():
+    set_all_servos(OBJECT_PICKUP_MAIN_ARM, OBJECT_PICKUP_CAMERA_ARM)
+    sleep(0.5)
+    set_all_servos(OBJECT_PICKUP_MAIN_ARM, OBJECT_PICKUP_CAMERA_ARM, OBJECT_PICKUP_GRIPPER_ARM)
+    sleep(2)
+    #earlier it was 120
+    set_all_servos(90, 180)
+
+def drop_object():
+    set_all_servos(OBJECT_DROP_MAIN_ARM, OBJECT_DROP_CAMERA_ARM)
+    sleep(0.5)
+    set_all_servos(OBJECT_DROP_MAIN_ARM, OBJECT_DROP_CAMERA_ARM, OBJECT_DROP_GRIPPER_ARM)
+    sleep(2)
+    #earlier it was 120
+    set_all_servos(90, 180)
 
 if __name__ == "__main__" :
     make_camera_look_at_floor()

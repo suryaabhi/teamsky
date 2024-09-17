@@ -13,7 +13,14 @@ def Run():
     bot.find_way_back_to_path("right")
     sleep(1)
     bot.follow_line()
-    sleep(5)
+    sleep(2)
+    bot.seek_and_drop_object("right")
+    sleep(1)
+    bot.find_way_back_to_path("left")
+    sleep(1)
+    bot.follow_line()
+    sleep(2)
+
     # # while True:
     #     # bot.follow_line()
     #     # sleep(5)

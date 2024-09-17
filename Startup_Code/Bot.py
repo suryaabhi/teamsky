@@ -41,14 +41,10 @@ class Bot:
             MotorUtils.rotate_right(timeToMove)
 
     def __pickObject(self):
-        MotorUtils.set_all_servos(137, 180)
-        sleep(0.5)
-        MotorUtils.set_all_servos(137, 180, 55)
-        sleep(2)
-        #earlier it was 120
-        MotorUtils.set_all_servos(90, 180)
+        ServoUtils.pick_object()
      
-
+    def __dropObject(self):
+        ServoUtils.drop_object()
             
     def pickpen(self):
         MotorUtils.set_all_servos(137, 180)
@@ -171,19 +167,15 @@ class Bot:
                     break
 
     def seek_and_drop_object(self, rotate_direction):
-        '''
-        UNTESTED CODE WRITTEN BY COPILOT
-        DO NOT RUN WITHOUT VERIFICATION
-        '''
         object_color = self.drop_color
         object_shape = self.drop_shape
         ServoUtils.reset_arms()
         sleep(2)
-        ServoUtils.make_camera_look_at_object()
+        ServoUtils.make_camera_look_at_marker()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, object_color, object_shape)
+            present, dir = detect_color_shape(image, "blue", "circle")
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -195,9 +187,10 @@ class Bot:
                 if not self.__isDistanceReached():
                     self.__moveForward()
                 else:
-                    MotorUtils.set_all_servos(137, 180, 55)
-                    sleep(2)
-                    MotorUtils.set_all_servos(120, 180)
+                    self.__dropObject()
+                    self.__moveBackward()
+                    sleep(1)
+                    self.__rotateInDirection( self.__oppositeDir(rotate_direction) , False )
                     break
 
     
