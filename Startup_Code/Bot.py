@@ -2,7 +2,7 @@ from detect_object import detect_color_shape
 from time import sleep
 import cv2
 from Utils.PathMoverUtils import run_path_follower, is_path_found
-
+from llm import llm_bb_1
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
 import Utils.UltrasonicUtils as UltrasonicUtils
@@ -81,6 +81,9 @@ class Bot:
         return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
 
     def read_billboard_1(self):
+        image = ImageUtils.get_frame()
+        ret = llm_bb_1(image)
+        print(ret)
         self.pick_color = "red"
         self.pick_shape = "circle"
         self.drop_color = "blue"
