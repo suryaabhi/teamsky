@@ -2,7 +2,7 @@ from detect_object import detect_color_shape
 from time import sleep
 import cv2
 from Utils.PathMoverUtils import run_path_follower, is_path_found
-from llm import llm_bb_1
+from llm import send_to_llm_bb1
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
 import Utils.UltrasonicUtils as UltrasonicUtils
@@ -82,13 +82,14 @@ class Bot:
 
     def read_billboard_1(self):
         image = ImageUtils.get_frame()
-        ret = llm_bb_1(image)
-        print(ret)
-        self.pick_color = "red"
-        self.pick_shape = "circle"
-        self.drop_color = "blue"
-        self.drop_shape = "square"
-        pass
+        llm_resp = send_to_llm_bb1(image)
+        print(llm_resp)
+        if not llm_resp["found"]:
+            return
+        self.pick_color = llm_resp["pick"]["color"]
+        self.pick_shape = llm_resp["pick"]["shape"]
+        self.drop_color = llm_resp["drop"]["color"]
+        self.drop_shape = llm_resp["drop"]["shape"]
     
     def read_billboard_2(self):
         self.intersection_answer = "left"
