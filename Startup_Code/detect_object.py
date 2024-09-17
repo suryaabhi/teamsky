@@ -64,15 +64,15 @@ def detect_color_shape(image, color, shape):
         if area < 800:
             continue
 
-        approx = cv2.approxPolyDP(contour, (0.01 if shape=="circle" else 0.15) * cv2.arcLength(contour, True), True)
+        approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
         cx, cy = None, None
         print("Number of contours detected: ", len(approx))
 
-        if len(approx) == 4:
+        if len(approx) >= 4 and len(approx) <= 8:
             shape_detected = "square"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
-        elif len(approx) >= 11:
+        elif len(approx) >= 9:
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
