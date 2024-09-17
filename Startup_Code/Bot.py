@@ -5,7 +5,7 @@ from Utils.PathMoverUtils import run_path_follower, is_path_found
 import llm
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
-import Utils.UltrasonicUtils as UltrasonicUtils, NormalizedRunningDistance
+import Utils.UltrasonicUtils as UltrasonicUtils
 import Utils.MotorUtils as MotorUtils
 
 
@@ -161,7 +161,7 @@ class Bot:
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
-        distanceSensor = NormalizedRunningDistance()
+        distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -191,7 +191,7 @@ class Bot:
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()
-        distanceSensor = NormalizedRunningDistance()
+        distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()

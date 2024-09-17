@@ -2,12 +2,13 @@ import random
 import requests
 from numpy import frombuffer
 from numpy import uint8
+import numpy as np
 import os
 from Utils.ImageUtils import get_frame
 import base64
 from dotenv import load_dotenv
 load_dotenv()
-
+import cv2
 # Read api token from .env
 API_TOKEN = os.getenv("AZ_API")
 DEBUG = os.getenv("DEBUG") == "True"
@@ -16,19 +17,17 @@ API_BASE_URL = "https://roborumble-teamsky-2024.openai.azure.com/openai/deployme
 headers = {"api-key": API_TOKEN}
 
 def __encode_image(image):
-    return base64.b64encode(image).decode("utf-8")
+    success, encoded_image = cv2.imencode('.png', image)
+    content2 = encoded_image.tobytes()
+    return base64.b64encode(content2).decode('utf-8')
 
 def __callAzureOpenAI(payload):
     response = requests.post(API_BASE_URL, headers=headers, json=payload)
     return response.json()
 
-def __output_processor_bb1(oj):
-
-    print(oj)
-    print(oj["result"])
+def __output_processor_bb1(res):
 
     answer = {}
-    res = oj["result"]["description"].lower()
     if len(res.split()) == 7:
             pickstmt = res.split("|")[0].strip()
             dropstmt = res.split("|")[1].strip()
