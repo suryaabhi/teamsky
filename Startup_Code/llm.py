@@ -96,6 +96,7 @@ def __output_processor_bb3(oj):
     return answer
 
 def send_to_llm_bb1(image):
+    image = __encode_image(image)
     payload = {
         "messages": [
             {
@@ -123,11 +124,9 @@ def send_to_llm_bb1(image):
 
     output = __callAzureOpenAI(payload)
     
-    if not output["success"]:
-        print(f"API error {output['error']}")
-        return None
+    print(output)
 
-    airesponse = output.json()["choices"][0]["message"]["content"]
+    airesponse = output["choices"][0]["message"]["content"]
     print(airesponse)
 
     return __output_processor_bb1(airesponse)
