@@ -14,7 +14,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 def __callAzureOpenAI(model, image=None, prompt=None):
     input = { "prompt": prompt }
 
-    input["images"] = image
+    input["image"] = image
     input["max_tokens"] = 100
 
     # print(input)
@@ -96,7 +96,12 @@ def send_to_llm_bb1(image):
     image = frombuffer(image, uint8)
     image = image.tolist()
     
-    prompt = "you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object. example response: \npick red square | drop blue circle\nexample response:\npick green circle | drop yellow square\nexample response:\npick red circle | drop blue circle\nexample response:\nnow you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples" 
+    prompt = """
+    you are an assisstant designed to answer which object to pick and which object to drop. you should also specify the colour and shape of the object.
+    example response: pick red square | drop blue square
+    example response: pick green circle | drop yellow square
+    example response: pick red circle | drop blue circle
+    now you need to analyse the image and tell which object to pick and which to drop. keep the response very short and following the pattern mentioned in the examples"""
 
     output = __callAzureOpenAI("@cf/llava-hf/llava-1.5-7b-hf", image, prompt)
     
@@ -104,9 +109,8 @@ def send_to_llm_bb1(image):
         print(f"API error {output["error"]}")
         return None
     
-    if DEBUG:
-        print(output)
-        print(output["result"])
+    print(output)
+    print(output["result"])
 
     return __output_processor_bb1(output)
 
@@ -124,9 +128,8 @@ def send_to_llm_bb2(image):
 
     output = __callAzureOpenAI("@cf/llava-hf/llava-1.5-7b-hf", image, prompt)
     
-    if DEBUG:
-        print(output)
-        print(output["result"])
+    print(output)
+    print(output["result"])
 
     return __output_processor_bb2(output)
 
@@ -153,8 +156,13 @@ def send_to_llm_bb3(image):
 
     output = __callAzureOpenAI("@cf/llava-hf/llava-1.5-7b-hf", image, prompt)
     
-    if DEBUG:
-        print(output)
-        print(output["result"])
+    print(output)
+    print(output["result"])
 
     return __output_processor_bb3(output)
+
+
+if __name__ == "__main__":
+    image = open("~/Downloads/output.jpg", "rb").read()
+    print(send_to_llm_bb1(image))
+    pass
