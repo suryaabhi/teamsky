@@ -91,7 +91,7 @@ class Bot:
         self.drop_color = llm_resp["drop"]["color"]
         self.drop_shape = llm_resp["drop"]["shape"]
         sleep(0.5)
-        self.moveForward()
+        self.moveForward(0.3)
         sleep(0.5)
         return True
     
@@ -132,7 +132,7 @@ class Bot:
         self.__look_at_return_marker()
         while True:
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "square")
+            present, dir = detect_color_shape(image, "blue", "square", 40)
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -198,7 +198,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "red", "square")
+            present, dir = detect_color_shape(image, "red", "square", 30)
 
             if not present or (present and dir != "center"):
                 if not present:

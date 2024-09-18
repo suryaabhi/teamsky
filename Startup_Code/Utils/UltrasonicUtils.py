@@ -32,7 +32,7 @@ def getNormalizedDistance():
     d = []
     for i in range(RUNS):
         d.append(round(get_distance(), 2))
-        time.sleep(0.1)
+        time.sleep(0.02)
     print("distance arr", d)
     d = d[2:-2]
     ret = sum(d) / len(d)
