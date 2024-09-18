@@ -43,7 +43,7 @@ def detect_color_shape(image, color, shape, delta = 20):
 
     hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
     # print(hsv_)
-    lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 100, 80])
+    lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 100, 100])
     upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
 
     mask = cv2.inRange(hsv, lower, upper)
@@ -92,14 +92,14 @@ def detect_color_shape(image, color, shape, delta = 20):
                 shape_detected = "square"
                 cx, cy = get_centroid(contour, image)
             elif len(approx) >= 10:
-                if len(approxSquare) >= 4 and len(approxSquare) <= 8:
-                    print("In circle detected square!!")
-                    shape_detected = "square"
-                    cx, cy = get_centroid(contour, image)
-                else:
-                    print("In circle detected circle!!")
-                    shape_detected = "circle"
-                    
+                # if len(approxSquare) >= 4 and len(approxSquare) <= 8:
+                #     print("In circle detected square!!")
+                #     shape_detected = "square"
+                #     cx, cy = get_centroid(contour, image)
+                # else:
+                print("In circle detected circle!!")
+                shape_detected = "circle"
+                
         if shape_detected != "None":
             cx, cy = get_centroid(contour, image)
  
@@ -122,6 +122,6 @@ def detect_color_shape(image, color, shape, delta = 20):
 
 if __name__ == "__main__":
     while True:
-        time.sleep(1)
         image = get_frame()
         ret = detect_color_shape(image, "blue", "circle")
+        time.sleep(1)
