@@ -1,7 +1,7 @@
 from detect_object_new import detect_color_shape
 from time import sleep
 import cv2
-from Utils.PathMoverUtils import run_path_follower, is_path_found
+from Utils.PathMoverUtils import run_path_follower, is_path_found, turn_left, turn_right
 import llm
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
@@ -152,6 +152,9 @@ class Bot:
                     return
                 self.__look_at_return_marker()
 
+    def execute_lane(self):
+        if self.intersection_answer == "left":
+            turn_left()
         
 
     def move_to_answer_path(self):

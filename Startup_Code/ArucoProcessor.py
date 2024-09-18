@@ -22,6 +22,9 @@ def processDropObject(bot, dir):
 def processReadBillboard2(bot: Bot):
     bot.read_billboard_2()
 
+def processLane(bot):
+    bot.execute_lane()
+
 def processAruco(bot, aruco):
     # TODO: add visited 
     match aruco:
@@ -48,5 +51,6 @@ def processAruco(bot, aruco):
             sleep(2)
 
         case MarkerAction.EXECUTE_LANE:
-            pass
+            processLane(bot)
+            sleep(2)
 
