@@ -9,14 +9,14 @@ def processPickObject(bot, dir):
     bot.seek_and_pick_object(dir)
     sleep(2)
 
-    bot.find_way_back_to_path(bot.oppositeDir(dir))
+    bot.find_way_back_to_path_ultrasonic(bot.oppositeDir(dir))
     sleep(1)
 
 def processDropObject(bot, dir):
     bot.seek_and_drop_object(dir)
     sleep(2)
 
-    bot.find_way_back_to_path(bot.oppositeDir(dir))
+    bot.find_way_back_to_path_ultrasonic(bot.oppositeDir(dir))
     sleep(1)
 
 def processReadBillboard2(bot: Bot):

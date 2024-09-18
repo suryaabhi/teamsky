@@ -15,8 +15,7 @@ def detect_return_marker():
 
 
 #TODO define
-DISTANCE_THRESHOLD = 20
-PATH_FINDER_OBJECT_COLOR = "orange"
+PATH_FINDER_OBJECT_COLOR = "red"
 PATH_FINDER_OBJECT_SHAPE = "circle"
 
 class Bot:
@@ -74,9 +73,12 @@ class Bot:
     def moveBackward(self):
         MotorUtils.back(0.3)
 
-    def __isDistanceReached(self, distanceSensor):
-        return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
-        return distanceSensor.getDistance() <= DISTANCE_THRESHOLD
+    def __isDistanceReached(self, distance_threshold = 20):
+        return UltrasonicUtils.getNormalizedDistance() <= distance_threshold
+        # return distanceSensor.getDistance() <= distance_threshold
+
+    def __isBeyondDistance(self, max_distance = 17):
+        return UltrasonicUtils.getNormalizedDistance() <= max_distance
 
     def read_billboard_1(self):
         ServoUtils.make_camera_look_at_billboard()
@@ -136,7 +138,7 @@ class Bot:
         self.__look_at_return_marker()
         while True:
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "blue", "square", 40)
+            present, dir = detect_color_shape(image, PATH_FINDER_OBJECT_COLOR, PATH_FINDER_OBJECT_SHAPE, 40)
 
             if not present or (present and dir != "center"):
                 if not present:
@@ -150,15 +152,49 @@ class Bot:
                 self.moveForward(0.3)
                 if self.searchPath():
                     if rotate_direction == "left":
-                        self.moveForward(0.2)
+                        self.moveForward(0.35)
                         rotate_right_until_road_found()
                         sleep(1)
                     else:
-                        self.moveForward(0.2)
+                        self.moveForward(0.35)
                         rotate_left_until_road_found()
                         sleep(1)
                     return
                 self.__look_at_return_marker()
+
+
+    def find_way_back_to_path_ultrasonic(self, rotate_direction):
+
+        self.__look_at_return_marker()
+        while True:
+            image = ImageUtils.get_frame()
+            present, dir = detect_color_shape(image, PATH_FINDER_OBJECT_COLOR, PATH_FINDER_OBJECT_SHAPE, 40)
+
+            if not present or (present and dir != "center"):
+                if not present:
+                    self.__rotateInDirection(rotate_direction, False)
+                    sleep(0.2)
+                else:
+                    self.__rotateInDirection(dir, True)
+                    sleep(0.2)
+                continue
+            else:
+                if not self.__isDistanceReached(30) :
+                    self.moveForward(0.3)
+                else:
+                    if self.searchPath():
+                        if rotate_direction == "left":
+                            self.moveForward(0.35)
+                            rotate_right_until_road_found()
+                            sleep(1)
+                        else:
+                            self.moveForward(0.35)
+                            rotate_left_until_road_found()
+                            sleep(1)
+                        return
+                    self.moveForward(0.15)
+                    self.__look_at_return_marker()
+                
 
     def execute_lane(self):
         if self.intersection_answer == "left":
@@ -179,7 +215,7 @@ class Bot:
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
-        distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
+        # distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -192,9 +228,10 @@ class Bot:
                     self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not self.__isDistanceReached(distanceSensor) :
+                if not self.__isDistanceReached() :
                     self.moveForward()
-
+                elif self.__isBeyondDistance():
+                    self.moveBackward()
                 else:
                     self.__pickObject()
                     sleep(1)
@@ -209,7 +246,7 @@ class Bot:
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()
-        distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
+        # distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -222,8 +259,10 @@ class Bot:
                     self.__rotateInDirection(dir, True)
                 continue
             else:
-                if not self.__isDistanceReached(distanceSensor):
+                if not self.__isDistanceReached(21):
                     self.moveForward()
+                elif self.__isBeyondDistance():
+                    self.moveBackward()
                 else:
                     self.__dropObject()
                     self.moveBackward()
