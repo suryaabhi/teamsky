@@ -57,7 +57,8 @@ def __output_processor_bb2(res):
         answer["path"] = "straight"
     else:
         answer["found"] = False
-        answer["path"] = "unknown"
+        # select random path from "left" "right" "straight"
+        answer["path"] = random.choice(["left", "right", "straight"])
     print(answer)
     return answer
 
@@ -69,6 +70,8 @@ def __output_processor_bb3(res):
         answer["object"] = res.split()[1]
     else:
         answer["found"] = False
+        answer["number"] = 0
+        answer["object"] = "C"
     
     print(answer)
     return answer
