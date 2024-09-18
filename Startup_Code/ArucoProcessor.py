@@ -2,7 +2,7 @@ from Utils.ARTagUtils import MarkerAction
 from time import sleep
 import Bot
 
-def procssReadBillBoard(bot: Bot):
+def processReadBillBoard1(bot: Bot):
     bot.read_billboard_1()
 
 def processPickObject(bot, dir):
@@ -19,12 +19,15 @@ def processDropObject(bot, dir):
     bot.find_way_back_to_path(bot.oppositeDir(dir))
     sleep(1)
 
+def processReadBillboard2(bot: Bot):
+    bot.read_billboard_2()
+
 def processAruco(bot, aruco):
     # TODO: add visited 
     match aruco:
         case MarkerAction.READ_BILLBOARD_1:
             # sleep(3)
-            procssReadBillBoard(bot)
+            processReadBillBoard1(bot)
             sleep(2)
         
         case MarkerAction.PICK_OBJECT_RIGHT:
@@ -38,4 +41,12 @@ def processAruco(bot, aruco):
 
         case MarkerAction.DROP_OBJECT_RIGHT:
             processDropObject(bot, "right")
+
+        case MarkerAction.READ_BILLBOARD_2:
+            # sleep(3)
+            processReadBillboard2(bot)
+            sleep(2)
+
+        case MarkerAction.EXECUTE_LANE:
+            pass
 
