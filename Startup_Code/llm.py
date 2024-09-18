@@ -1,17 +1,15 @@
 import random
 import requests
-from numpy import frombuffer
-from numpy import uint8
-import numpy as np
 import os
 from Utils.ImageUtils import get_frame
 import base64
 from dotenv import load_dotenv
 load_dotenv()
 import cv2
+
 # Read api token from .env
 API_TOKEN = os.getenv("AZ_API")
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = os.getenv("DEBUG")
 
 API_BASE_URL = "https://roborumble-teamsky-2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview"
 headers = {"api-key": API_TOKEN}
@@ -64,14 +62,12 @@ def __output_processor_bb2(res):
 
 def __output_processor_bb3(res):
     answer = {}
-    if len(res.split()) == 2:
+    if len(res.split()) == 2 or len(res.split()) == 1:
         answer["found"] = True
-        answer["number"] = res.split()[0]
-        answer["object"] = res.split()[1]
+        answer["characters"] = res.split()
     else:
         answer["found"] = False
-        answer["number"] = 0
-        answer["object"] = "C"
+        answer["characters"] = ["2", "T"]
     
     print(answer)
     return answer
@@ -166,6 +162,10 @@ def send_to_llm_bb3(image):
             {
                 "role": "user",
                 "content": [
+                    {
+                        "type": "text",
+                        "text": "Identify the number of animals in the image. Count the number of animals in the image. Print the number and the first letter of the type of animal."  
+                    },
                     {
                         "type": "image_url",
                         "image_url": {
