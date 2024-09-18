@@ -19,7 +19,7 @@ def display(image, contour, shape, approx):
     cv2.drawContours(image, [contour], -1, (0, 255, 0), 1)
     x = approx.ravel()[0]
     y = approx.ravel()[1] - 10
-    cv2.putText(image, shape, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+    cv2.putText(image, shape + " Contours: " + str(len(approx)), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
     cv2.imshow('Detected Shapes', image)
     cv2.waitKey(1)
@@ -95,7 +95,7 @@ def detect_color_shape(image, color, shape, delta = 20):
                     shape_detected = "circle"
                     cx, cy = get_centroid(contour, image)
                     # display(image, contour, shape_detected, approxCircle)
-        display(image, contour, shape_detected, approxCircle)
+        display(image, contour, shape_detected, approxCircle if shape_detected == "circle" else approxSquare)
         if cx is not None and cy is not None and (shape_detected == shape):
             right = 320 + delta
             left = 320 - delta
