@@ -96,12 +96,16 @@ class Bot:
         return True
     
     def read_billboard_2(self):
+        ServoUtils.make_camera_look_at_billboard()
         image = ImageUtils.get_frame()
         llm_resp = llm.send_to_llm_bb2(image)
         print(llm_resp)
         if not llm_resp["found"]:
             return
         self.intersection_answer = "left"
+        sleep(0.5)
+        self.moveForward(0.3)
+        sleep(0.5)
         pass
     
     def read_billboard_3(self):
@@ -159,8 +163,8 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        object_color = "green"
-        object_shape = "square"
+        # object_color = "green"
+        # object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
@@ -198,7 +202,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "red", "square", 30)
+            present, dir = detect_color_shape(image, object_color, object_shape, 30)
 
             if not present or (present and dir != "center"):
                 if not present:
