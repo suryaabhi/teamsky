@@ -27,15 +27,14 @@ def get_distance():
     return distance
 
 #before editing check outlier detection part
-RUNS = 30
-
+RUNS = 10 
 def getNormalizedDistance():
     d = []
     for i in range(RUNS):
         d.append(round(get_distance(), 2))
-    
-    d.sort()
-    d = d[7:-7]
+        time.sleep(0.1)
+    print("distance arr", d)
+    d = d[2:-2]
     ret = sum(d) / len(d)
     print("normalized distance", ret)
     return ret

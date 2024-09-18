@@ -66,7 +66,7 @@ def detect_color_shape(image, color, shape):
 
         if shape == "square":
             approx = approxSquare
-            if len(approx) >= 4 and len(approx) <= 6:
+            if len(approx) >= 4 and len(approx) <= 8:
                 print("In square detected square!!")
                 shape_detected = "square"
                 cx, cy = get_centroid(contour, image)

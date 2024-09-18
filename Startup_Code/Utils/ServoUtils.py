@@ -16,8 +16,8 @@ OBJECT_DROP_MAIN_ARM = 137
 OBJECT_DROP_CAMERA_ARM = 150
 OBJECT_DROP_GRIPPER_ARM = 80
 
-MARKER_RETURN_MAIN_ARM = 120
-MARKER_RETURN_CAMERA_ARM =135
+MARKER_RETURN_MAIN_ARM = 105
+MARKER_RETURN_CAMERA_ARM = 135
 
 READ_BILLBOARD_MAIN_ARM = 95
 READ_BILLBOARD_CAMERA_ARM = 160 # try 175 to work for all distances
@@ -29,10 +29,12 @@ LINE_FOLLOW_CAMERA_ARM = 30
 
 def reset_arms(set_gripper=False):
     print("reset called")
+    sleep(0.5)
     if set_gripper is True:
         set_all_servos(RESET_MAIN_ARM, RESET_CAMERA_ARM, RESET_GRIPPER_ARM)
     else:
         set_all_servos(RESET_MAIN_ARM, RESET_CAMERA_ARM)
+    sleep(0.5)
     return
 
 

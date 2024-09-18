@@ -71,10 +71,11 @@ class Bot:
     def moveForward(self, speed=0.1):
         MotorUtils.front(speed)
 
-    def __moveBackward(self):
+    def moveBackward(self):
         MotorUtils.back(0.3)
 
     def __isDistanceReached(self, distanceSensor):
+        return UltrasonicUtils.getNormalizedDistance() <= DISTANCE_THRESHOLD
         return distanceSensor.getDistance() <= DISTANCE_THRESHOLD
 
     def read_billboard_1(self):
@@ -158,7 +159,7 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        object_color = "blue"
+        object_color = "green"
         object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
@@ -182,7 +183,7 @@ class Bot:
                 else:
                     self.__pickObject()
                     sleep(1)
-                    self.__moveBackward()
+                    self.moveBackward()
                     sleep(1)
                     self.__rotateInDirection( self.oppositeDir(rotate_direction) , False )
                     break
@@ -197,7 +198,7 @@ class Bot:
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
-            present, dir = detect_color_shape(image, "green", "square")
+            present, dir = detect_color_shape(image, "red", "square")
 
             if not present or (present and dir != "center"):
                 if not present:
