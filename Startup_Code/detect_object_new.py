@@ -61,7 +61,7 @@ def detect_color_shape(image, color, shape, delta = 20):
             continue
 
         approxCircle = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
-        approxSquare = cv2.approxPolyDP(contour, 0.15 * cv2.arcLength(contour, True), True)
+        approxSquare = cv2.approxPolyDP(contour, 0.1 * cv2.arcLength(contour, True), True)
         cx, cy = None, None
         print("Number of contours detected in circle: ", len(approxCircle), " in square: ", len(approxSquare))
 
@@ -72,14 +72,12 @@ def detect_color_shape(image, color, shape, delta = 20):
                 print("In square detected square!!")
                 shape_detected = "square"
                 cx, cy = get_centroid(contour, image)
-                # display(image, contour, shape_detected, approxSquare)
             elif len(approx) >= 9:
                 print("In square detected circle!!")
                 shape_detected = "circle"
                 cx, cy = get_centroid(contour, image)
-                # display(image, contour, shape_detected, approxCircle)
             else:
-                if (len(approxCircle) >= 10):
+                if len(approxCircle) >= 10:
                     print("In square detected circle!!")
                     shape_detected = "circle"
                     cx, cy = get_centroid(contour, image)
@@ -87,24 +85,20 @@ def detect_color_shape(image, color, shape, delta = 20):
                     print("In square detected square!!")
                     shape_detected = "square"
                     cx, cy = get_centroid(contour, image)
-                # display(image, contour, shape_detected, approxCircle)
         else:
             approx = approxCircle
             if len(approx) >= 4 and len(approx) <= 9:
                 print("In circle detected square!!")
                 shape_detected = "square"
                 cx, cy = get_centroid(contour, image)
-                # display(image, contour, shape_detected, approxSquare)
             elif len(approx) >= 10:
                 if len(approxSquare) >= 4 and len(approxSquare) <= 8:
                     print("In circle detected square!!")
                     shape_detected = "square"
                     cx, cy = get_centroid(contour, image)
-                    # display(image, contour, shape_detected, approxSquare)
                 else:
                     print("In circle detected circle!!")
                     shape_detected = "circle"
-                    # display(image, contour, shape_detected, approxCircle)
                     
         if shape_detected != "None":
             cx, cy = get_centroid(contour, image)
