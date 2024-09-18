@@ -25,7 +25,7 @@ def display(image, contour, shape, approx):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def detect_color_shape(image, color, shape):
+def detect_color_shape(image, color, shape, delta = 20):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     # rgb -> bgr
     if color == "green":
@@ -96,7 +96,6 @@ def detect_color_shape(image, color, shape):
                     # display(image, contour, shape_detected, approxCircle)
             
         if cx is not None and cy is not None and (shape_detected == shape):
-            delta = 20
             right = 320 + delta
             left = 320 - delta
             if (cx < right) and (cx > left):
@@ -113,10 +112,7 @@ def detect_color_shape(image, color, shape):
     return (False, "")
 
 if __name__ == "__main__":
-    # image = cv2.imread(".\images\output_right.jpg")
-    # ret = detect_color_shape(image, "blue", "square")
     while True:
         time.sleep(1)
         image = get_frame()
         ret = detect_color_shape(image, "orange", "circle")
-        # print("Detected color and shape: ", ret)
