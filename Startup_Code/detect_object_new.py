@@ -22,8 +22,8 @@ def display(image, contour, shape, approx):
     cv2.putText(image, shape, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
     cv2.imshow('Detected Shapes', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv2.waitKey(1)
+    cv2.destroyAllWindows
 
 def detect_color_shape(image, color, shape, delta = 20):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -64,6 +64,7 @@ def detect_color_shape(image, color, shape, delta = 20):
         cx, cy = None, None
         print("Number of contours detected in circle: ", len(approxCircle), " in square: ", len(approxSquare))
 
+        shape_detected = "None"
         if shape == "square":
             approx = approxSquare
             if len(approx) >= 4 and len(approx) <= 8:
@@ -94,7 +95,7 @@ def detect_color_shape(image, color, shape, delta = 20):
                     shape_detected = "circle"
                     cx, cy = get_centroid(contour, image)
                     # display(image, contour, shape_detected, approxCircle)
-            
+        display(image, contour, shape_detected, approxCircle)
         if cx is not None and cy is not None and (shape_detected == shape):
             right = 320 + delta
             left = 320 - delta
