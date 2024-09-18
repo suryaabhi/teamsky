@@ -123,5 +123,5 @@ def detect_color_shape(image, color, shape, delta = 20):
 if __name__ == "__main__":
     while True:
         image = get_frame()
-        ret = detect_color_shape(image, "blue", "circle")
+        ret = detect_color_shape(image, "red", "circle")
         time.sleep(1)
