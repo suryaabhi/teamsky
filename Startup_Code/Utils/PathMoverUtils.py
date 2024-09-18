@@ -206,6 +206,14 @@ def rotate_right_until_road_found():
             break
         rotate_right(0.1)
 
+def rotate_left_until_road_found():
+    while True:
+        contour_dict = get_contours_from_frame(get_frame())
+        # Rotate until you are back on the path
+        if contour_dict['bottom'][0] >= 0.3 * box_positions['bottom']['width'] * box_positions['bottom']['height']:
+            break
+        rotate_left(0.1)
+
  
 def execute_action(action, angle):
     match action:

@@ -1,7 +1,7 @@
 from detect_object_new import detect_color_shape
 from time import sleep
 import cv2
-from Utils.PathMoverUtils import run_path_follower, is_path_found, turn_left, turn_right
+from Utils.PathMoverUtils import run_path_follower, is_path_found, rotate_right_until_road_found, rotate_left_until_road_found, turn_left, turn_right
 import llm
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
@@ -149,6 +149,14 @@ class Bot:
             else:
                 self.moveForward(0.3)
                 if self.searchPath():
+                    if rotate_direction == "left":
+                        self.moveForward(0.2)
+                        rotate_right_until_road_found()
+                        sleep(1)
+                    else:
+                        self.moveForward(0.2)
+                        rotate_left_until_road_found()
+                        sleep(1)
                     return
                 self.__look_at_return_marker()
 
