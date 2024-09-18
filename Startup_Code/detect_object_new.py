@@ -78,20 +78,25 @@ def detect_color_shape(image, color, shape, delta = 20):
                 shape_detected = "circle"
                 cx, cy = get_centroid(contour, image)
                 # display(image, contour, shape_detected, approxCircle)
-            elif (len(approxCircle) >= 9):
-                print("In square detected circle!!")
-                shape_detected = "circle"
-                cx, cy = get_centroid(contour, image)
+            else:
+                if (len(approxCircle) >= 10):
+                    print("In square detected circle!!")
+                    shape_detected = "circle"
+                    cx, cy = get_centroid(contour, image)
+                else:
+                    print("In square detected square!!")
+                    shape_detected = "square"
+                    cx, cy = get_centroid(contour, image)
                 # display(image, contour, shape_detected, approxCircle)
         else:
             approx = approxCircle
-            if len(approx) >= 4 and len(approx) <= 8:
+            if len(approx) >= 4 and len(approx) <= 9:
                 print("In circle detected square!!")
                 shape_detected = "square"
                 cx, cy = get_centroid(contour, image)
                 # display(image, contour, shape_detected, approxSquare)
-            elif len(approx) >= 9:
-                if len(approxSquare) >= 4 and len(approxSquare) <= 6:
+            elif len(approx) >= 10:
+                if len(approxSquare) >= 4 and len(approxSquare) <= 8:
                     print("In circle detected square!!")
                     shape_detected = "square"
                     cx, cy = get_centroid(contour, image)
@@ -99,8 +104,11 @@ def detect_color_shape(image, color, shape, delta = 20):
                 else:
                     print("In circle detected circle!!")
                     shape_detected = "circle"
-                    cx, cy = get_centroid(contour, image)
                     # display(image, contour, shape_detected, approxCircle)
+                    
+        if shape_detected != "None":
+            cx, cy = get_centroid(contour, image)
+ 
         display(image, contour, shape_detected, approxSquare, approxCircle)
         if cx is not None and cy is not None and (shape_detected == shape):
             right = 320 + delta
@@ -122,4 +130,4 @@ if __name__ == "__main__":
     while True:
         time.sleep(1)
         image = get_frame()
-        ret = detect_color_shape(image, "blue", "square")
+        ret = detect_color_shape(image, "blue", "circle")
