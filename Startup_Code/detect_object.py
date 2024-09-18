@@ -19,31 +19,35 @@ def display(image, contour, shape, approx):
     cv2.drawContours(image, [contour], -1, (0, 255, 0), 1)
     x = approx.ravel()[0]
     y = approx.ravel()[1] - 10
-    cv2.putText(image, shape, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+    cv2.putText(image, shape + " contour " + str(len(approx)), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
     cv2.imshow('Detected Shapes', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv2.waitKey(1)
+    cv2.destroyAllWindows
 
 def detect_color_shape(image, color, shape):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     # rgb -> bgr
     if color == "green":
-        color_bgr = np.uint8([[[15,  164, 114]]])
+        # color_bgr = np.uint8([[[15,  164, 114]]])
+        color_bgr = np.uint8([[[33,  159, 87]]])
+        # color_bgr = np.uint8([[[51,  154, 60]]])
     if color == "red":
         color_bgr = np.uint8([[[181,  41, 37]]])
     if color == "blue":
-        color_bgr = np.uint8([[[0,  114, 171]]])
+        # color_bgr = np.uint8([[[0,  114, 171]]])
+        color_bgr = np.uint8([[[3,  48, 106]]])
     if color == "orange":
         color_bgr = np.uint8([[[238,  181, 58]]])
 
     hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
-    lower = np.array([hsv_[0][0][0] - 10, 100, 100])
-    upper = np.array([hsv_[0][0][0] + 10, 255, 255])
+    lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 100, 80])
+    upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
 
     mask = cv2.inRange(hsv, lower, upper)
     cv2.imshow('mask', mask)
     cv2.waitKey(1)
+    cv2.destroyAllWindows
 
     blurred_mask = cv2.GaussianBlur(mask, (7, 7), 0)
     # cv2.imshow('blurred mask', blurred_mask)
@@ -59,20 +63,20 @@ def detect_color_shape(image, color, shape):
         if area < 800:
             continue
 
-        approx = cv2.approxPolyDP(contour, (0.01 if shape=="circle" else 0.1) * cv2.arcLength(contour, True), True)
+        approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
         cx, cy = None, None
-        print(len(approx))
 
-        if len(approx) == 4:
+        if len(approx) >= 4 and len(approx) <= 8:
             shape_detected = "square"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
-        elif len(approx) > 13:
+        elif len(approx) >= 9:
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
             # display(image, contour, shape_detected, approx)
+        display(image, contour, shape_detected, approx)
         
-        if cx is not None and cy is not None:
+        if cx is not None and cy is not None and (shape_detected == shape):
             delta = 20
             right = 320 + delta
             left = 320 - delta
