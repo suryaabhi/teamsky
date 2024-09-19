@@ -25,37 +25,33 @@ def display(image, contour, shape, approx):
     cv2.waitKey(1)
     cv2.destroyAllWindows
 
-def detect_color_shape(image, color, shape):
+def detect_color_shape(image, color, shape, delta=20):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     # rgb -> bgr
     if color == "green":
-        # color_bgr = np.uint8([[[15,  164, 114]]])
         color_bgr = np.uint8([[[33,  159, 87]]])
-        # color_bgr = np.uint8([[[51,  154, 60]]])
     if color == "red":
         color_bgr = np.uint8([[[181,  41, 37]]])
     if color == "blue":
-        # color_bgr = np.uint8([[[0,  114, 171]]])
         color_bgr = np.uint8([[[3,  48, 106]]])
-    if color == "orange":
-        color_bgr = np.uint8([[[238,  181, 58]]])
-
+    
     hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
-    lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 100, 80])
-    upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
+    if color == "blue":
+        lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 140, 60])
+        upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
+    if color == "red":
+        lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 135, 60])
+        upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
+    if color == "green":
+        lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 135, 40])
+        upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
 
     mask = cv2.inRange(hsv, lower, upper)
     cv2.imshow('mask', mask)
     cv2.waitKey(1)
     cv2.destroyAllWindows
-
     blurred_mask = cv2.GaussianBlur(mask, (7, 7), 0)
-    # cv2.imshow('blurred mask', blurred_mask)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
-    # smoothed_image = cv2.bitwise_and(image, image, mask=blurred_mask)
-   
     contours, _ = cv2.findContours(blurred_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     shape_detected = ""
     for contour in contours:
@@ -65,15 +61,13 @@ def detect_color_shape(image, color, shape):
 
         approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
         cx, cy = None, None
-
-        if len(approx) >= 4 and len(approx) <= 8:
-            shape_detected = "square"
-            cx, cy = get_centroid(contour, image)
-            # display(image, contour, shape_detected, approx)
-        elif len(approx) >= 9:
+        
+        if len(approx) >= 9:
             shape_detected = "circle"
             cx, cy = get_centroid(contour, image)
-            # display(image, contour, shape_detected, approx)
+        elif len(approx) >= 4 and len(approx) <= 8:
+            shape_detected = "square"
+            cx, cy = get_centroid(contour, image)
         display(image, contour, shape_detected, approx)
         
         if cx is not None and cy is not None and (shape_detected == shape):
@@ -89,13 +83,16 @@ def detect_color_shape(image, color, shape):
             elif cx < left:
                 print("*********" , color, " " , shape, " detected", "in left ",  "*********")
                 return (True, "left") 
-            
-    print("*********" , color, " " , shape, " not detected", "*********")
-    return (False, "")
 
-if __name__ == "__main__":
+if __name__ == "__main__":   
     while True:
-        time.sleep(1)
         image = get_frame()
-        ret = detect_color_shape(image, "orange", "circle")
-        print("Detected color and shape: ", ret)
+        # image = cv2.imread("real-world/12.png")
+        ret = detect_color_shape(image, "red", "circle")
+        # ret = detect_color_shape(image, "red", "square")
+        # ret = detect_color_shape(image, "blue", "circle")
+        # ret = detect_color_shape(image, "blue", "square")
+        # ret = detect_color_shape(image, "green", "circle")
+        # ret = detect_color_shape(image, "green", "square")
+        print("Detected color and shape: ", ret)     
+        break  
