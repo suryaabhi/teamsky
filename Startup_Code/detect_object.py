@@ -84,6 +84,8 @@ def detect_color_shape(image, color, shape, delta=20):
             elif cx < left:
                 print("*********" , color, " " , shape, " detected", "in left ",  "*********")
                 return (True, "left") 
+    print("*********" , color, " " , shape, " not detected", "*********")
+    return (False, "")
 
 if __name__ == "__main__":   
     while True:

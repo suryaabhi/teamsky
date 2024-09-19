@@ -28,7 +28,7 @@ def processReadBillboard3(bot: Bot):
 def processLane(bot):
     bot.execute_lane()
 
-def processPickAndWrite(bot, dir):
+def processPickAndWrite(bot):
     bot.seek_and_pick_object("left", True)
     sleep(2)
 
