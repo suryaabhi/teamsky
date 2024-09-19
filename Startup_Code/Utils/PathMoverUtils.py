@@ -294,7 +294,7 @@ def is_path_found():
 
     action, deg = get_current_road_node(get_contours_from_frame(frame))
     print(action, deg)
-
+    sleep(0.2)
     return action != "deadend"
 
 

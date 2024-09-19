@@ -1,4 +1,4 @@
-from detect_object_new import detect_color_shape
+from detect_object import detect_color_shape
 from time import sleep
 import cv2
 from Utils.PathMoverUtils import run_path_follower, is_path_found, rotate_right_until_road_found, rotate_left_until_road_found
@@ -18,19 +18,22 @@ def detect_return_marker():
 PATH_FINDER_OBJECT_COLOR = "red"
 PATH_FINDER_OBJECT_SHAPE = "circle"
 
+#KRITIKA/VINIT
+PICK_OBJECT_FALLBACK_COLOR = "blue"
+PICK_OBJECT_FALLBACK_SHAPE = "square"
+DROP_OBJECT_FALLBACK_COLOR = "green"
+DROP_OBJECT_FALLBACK_SHAPE = "circle"
+
 class Bot:
     def __init__(self):
-        self.pick_color = None
-        self.pick_shape = None
-        self.drop_color = None
-        self.drop_shape = None
+        self.pick_color= PICK_OBJECT_FALLBACK_COLOR
+        self.pick_shape = PICK_OBJECT_FALLBACK_SHAPE
+        self.drop_color = DROP_OBJECT_FALLBACK_COLOR
+        self.drop_shape= DROP_OBJECT_FALLBACK_SHAPE
+        self.intersection_answer = "right"
+        self.intersection_visited = 0
+        self.draw_answer = "3C"
 
-        self.intersection_answer = None
-
-        self.draw_answer = None
-
-        self.intersection
-        
 
     def __rotateInDirection(self, dir, isSmall):
         timeToMove = 0.1
@@ -47,6 +50,13 @@ class Bot:
      
     def __dropObject(self):
         ServoUtils.drop_object()
+
+    def isValidShape(self, shape):
+        return shape in ["square", "circle"]
+    
+    def isValidColor(self, color):
+        return color  in ["red", "blue", "green" s]
+
             
     def pickpen(self):
         MotorUtils.set_all_servos(137, 180)
@@ -90,19 +100,12 @@ class Bot:
         if not llm_resp["found"]:
             #TODO retry
             self.moveForward(0.3)
-            self.pick_color= "green"
-            self.pick_shape = "circle"
-            self.drop_color = "green"
-            self.drop_shape= "square"
             return False
-        self.pick_color = llm_resp["pick"]["color"]
-        self.pick_shape = llm_resp["pick"]["shape"]
-        self.drop_color = llm_resp["drop"]["color"]
-        self.drop_shape = llm_resp["drop"]["shape"]
-        self.pick_color= "blue"
-        self.pick_shape = "circle"
-        self.drop_color = "green"
-        self.drop_shape= "square"
+        
+        self.pick_color = llm_resp["pick"]["color"] if self.isValidColor(llm_resp["pick"]["color"]) else PICK_OBJECT_FALLBACK_COLOR
+        self.pick_shape = llm_resp["pick"]["shape"] if self.isValidShape(llm_resp["pick"]["shape"]) else PICK_OBJECT_FALLBACK_SHAPE
+        self.drop_color = llm_resp["drop"]["color"] if self.isValidColor(llm_resp["drop"]["color"]) else DROP_OBJECT_FALLBACK_COLOR
+        self.drop_shape = llm_resp["drop"]["shape"] if self.isValidShape(llm_resp["drop"]["shape"]) else DROP_OBJECT_FALLBACK_SHAPE
         sleep(0.5)
         self.moveForward(0.3)
         sleep(0.5)
@@ -115,7 +118,7 @@ class Bot:
         print(llm_resp)
         if not llm_resp["found"]:
             return
-        self.intersection_answer = "left"
+        self.intersection_answer = llm_resp["path"]
         sleep(0.5)
         self.moveForward(0.3)
         sleep(0.5)
@@ -203,29 +206,45 @@ class Bot:
                             rotate_left_until_road_found()
                             sleep(1)
                         return
-                    self.moveForward(0.15)
-                    self.__look_at_return_marker()
                 
 
     def execute_lane(self):
-        self.intersection_answer = "right"
-        if self.intersection_answer == "left":
-            MotorUtils.rotate_left(0.3)
-            sleep(0.5)
-            self.moveForward(1.8)
-            sleep(0.5)
-            rotate_left_until_road_found()
-            sleep(0.5)
-        elif self.intersection_answer == "right":
-            MotorUtils.rotate_right(0.3)
-            sleep(0.5)
-            self.moveForward(1.8)
-            sleep(0.5)
-            rotate_right_until_road_found()
-            sleep(0.5)
-        else:
-            self.moveForward(0.8)
-
+        if self.intersection_visited == 0:
+            self.intersection_visited = 1
+            if self.intersection_answer == "left":
+                MotorUtils.rotate_left(0.3)
+                sleep(0.5)
+                self.moveForward(1.8)
+                sleep(0.5)
+                rotate_left_until_road_found()
+                sleep(0.5)
+            elif self.intersection_answer == "right":
+                MotorUtils.rotate_right(0.3)
+                sleep(0.5)
+                self.moveForward(1.8)
+                sleep(0.5)
+                rotate_right_until_road_found()
+                sleep(0.5)
+            else:
+                self.moveForward(1.8)
+        elif self.intersection_visited == 1:
+            self.intersection_visited = 2
+            if self.intersection_answer == "left":
+                MotorUtils.rotate_left(0.4)
+                sleep(0.5)
+                self.moveForward(1)
+                sleep(0.5)
+                rotate_left_until_road_found()
+                sleep(0.5)
+            elif self.intersection_answer == "right":
+                MotorUtils.rotate_right(0.4)
+                sleep(0.5)
+                self.moveForward(1)
+                sleep(0.5)
+                rotate_right_until_road_found()
+                sleep(0.5)
+            else:
+                self.moveForward(1.8)
         
 
     def move_to_answer_path(self):
@@ -237,12 +256,9 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        # object_color = "red"
-        # object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
         ServoUtils.make_camera_look_at_object()
-        # distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()
@@ -270,12 +286,10 @@ class Bot:
     def seek_and_drop_object(self, rotate_direction):
         object_color = self.drop_color
         object_shape = self.drop_shape
-        # object_color = "blue"
-        # object_shape = "square"
+   
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()
-        # distanceSensor = UltrasonicUtils.NormalizedRunningDistance()
         while True:
             sleep(0.2)
             image = ImageUtils.get_frame()

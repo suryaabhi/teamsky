@@ -22,6 +22,9 @@ def processDropObject(bot, dir):
 def processReadBillboard2(bot: Bot):
     bot.read_billboard_2()
 
+def processReadBillboard3(bot: Bot):
+    bot.read_billboard_3()
+
 def processLane(bot):
     bot.execute_lane()
 
@@ -51,4 +54,13 @@ def processAruco(bot, aruco):
         case MarkerAction.EXECUTE_LANE:
             processLane(bot)
             sleep(2)
+
+        case MarkerAction.READ_BILLBOARD_3:
+            processReadBillboard3(bot)
+            sleep(2)
+            
+        case _:
+            print('No action')
+            sleep(1)
+            bot.moveForward(0.3)
 
