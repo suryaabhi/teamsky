@@ -7,7 +7,7 @@ import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
 import Utils.UltrasonicUtils as UltrasonicUtils
 import Utils.MotorUtils as MotorUtils
-
+from write_letter import write_letter
 
 # driver to test code 
 def detect_return_marker():
@@ -35,7 +35,7 @@ class Bot:
         self.drop_shape= DROP_OBJECT_FALLBACK_SHAPE
         self.intersection_answer = "right"
         self.intersection_visited = 0
-        self.draw_answer = "3C"
+        self.draw_answer = ["3", "C"]
 
 
     def __rotateInDirection(self, dir, isSmall):
@@ -323,4 +323,7 @@ class Bot:
         sleep(1)
         self.moveForward(0.2)
         sleep(1)
-        # write function using bot.draw_answer
+        
+        for letter in self.draw_answer:
+            write_letter(letter)
+            sleep(2)
