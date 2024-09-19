@@ -105,7 +105,7 @@ def send_to_llm_bb1(image):
     
     print(output)
     
-    if output.json().get("error"):
+    if output.get("error"):
         return fallback_answer(1)
 
     airesponse = output["choices"][0]["message"]["content"]
@@ -144,7 +144,7 @@ def send_to_llm_bb2(image):
     
     print(output)
     
-    if output.json().get("error"):
+    if output.get("error"):
         return fallback_answer(2)
 
     airesponse = output["choices"][0]["message"]["content"]
@@ -190,7 +190,7 @@ def send_to_llm_bb3(image):
     
     print(output)
     
-    if output.json().get("error"):
+    if output.get("error"):
         return fallback_answer(3)
 
     airesponse = output["choices"][0]["message"]["content"]
