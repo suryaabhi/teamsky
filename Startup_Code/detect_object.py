@@ -35,6 +35,7 @@ def detect_color_shape(image, color, shape, delta=20):
     if color == "blue":
         color_bgr = np.uint8([[[3,  48, 106]]])
     
+    hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
     if color == "blue":
         lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 140, 60])
         upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
@@ -44,7 +45,6 @@ def detect_color_shape(image, color, shape, delta=20):
     if color == "green":
         lower = np.array([max(int(hsv_[0][0][0]) - 15, 0), 135, 40])
         upper = np.array([min(int(hsv_[0][0][0]) + 15, 179), 255, 255])
-    hsv_ = cv2.cvtColor(color_bgr, cv2.COLOR_BGR2HSV)
 
     mask = cv2.inRange(hsv, lower, upper)
     cv2.imshow('mask', mask)
@@ -84,15 +84,15 @@ def detect_color_shape(image, color, shape, delta=20):
                 print("*********" , color, " " , shape, " detected", "in left ",  "*********")
                 return (True, "left") 
 
-    if __name__ == "__main__":   
-        while True:
-            image = get_frame()
-            # image = cv2.imread("real-world/12.png")
-            ret = detect_color_shape(image, "red", "circle")
-            # ret = detect_color_shape(image, "red", "square")
-            # ret = detect_color_shape(image, "blue", "circle")
-            # ret = detect_color_shape(image, "blue", "square")
-            # ret = detect_color_shape(image, "green", "circle")
-            # ret = detect_color_shape(image, "green", "square")
-            # ret = detect_color_shape(image, "orange", "circle")
-            print("Detected color and shape: ", ret)       
+if __name__ == "__main__":   
+    while True:
+        image = get_frame()
+        # image = cv2.imread("real-world/12.png")
+        ret = detect_color_shape(image, "red", "circle")
+        # ret = detect_color_shape(image, "red", "square")
+        # ret = detect_color_shape(image, "blue", "circle")
+        # ret = detect_color_shape(image, "blue", "square")
+        # ret = detect_color_shape(image, "green", "circle")
+        # ret = detect_color_shape(image, "green", "square")
+        print("Detected color and shape: ", ret)     
+        break  
