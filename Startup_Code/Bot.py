@@ -87,6 +87,7 @@ class Bot:
         print(llm_resp)
         if not llm_resp["found"]:
             #TODO retry
+            self.moveForward(0.3)
             return False
         self.pick_color = llm_resp["pick"]["color"]
         self.pick_shape = llm_resp["pick"]["shape"]
@@ -210,7 +211,7 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        # object_color = "green"
+        # object_color = "red"
         # object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
@@ -243,6 +244,8 @@ class Bot:
     def seek_and_drop_object(self, rotate_direction):
         object_color = self.drop_color
         object_shape = self.drop_shape
+        # object_color = "blue"
+        # object_shape = "square"
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()

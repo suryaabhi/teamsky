@@ -19,8 +19,8 @@ pca.frequency = 50  # Set PWM frequency to 1kHz
 # Define motor/servo channels on PCA9685
 motors = {
     "front_right": {"channel": 15, "in1": 14, "in2": 13},
-    "rear_left": {"channel": 4, "in1": 5, "in2": 6},
-    "front_left": {"channel": 9, "in1": 7, "in2": 8}, 
+    "front_left": {"channel": 4, "in1": 5, "in2": 6},
+    "rear_left": {"channel": 9, "in1": 7, "in2": 8}, 
     "rear_right": {"channel": 10, "in1": 12, "in2": 11}, 
 }
 servos = {
@@ -203,6 +203,7 @@ if __name__ == "__main__":
                 elif command == 't':
                     # Test all motors with speeds from 10 to 100 in increments of 10
                     for speed in range(10, 101, 10):
+                        print("Speed: ", speed)
                         move_motor(motors["front_left"], 1, speed)
                         sleep(1)
                         stop()

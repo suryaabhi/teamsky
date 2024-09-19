@@ -203,6 +203,7 @@ if __name__ == "__main__":
                 elif command == 't':
                     # Test all motors with speeds from 10 to 100 in increments of 10
                     for speed in range(10, 101, 10):
+                        print("Speed:", speed)
                         move_motor(motors["front_left"], 1, speed)
                         sleep(1)
                         stop()
