@@ -22,6 +22,8 @@ MARKER_RETURN_CAMERA_ARM = 67
 READ_BILLBOARD_MAIN_ARM = 85
 READ_BILLBOARD_CAMERA_ARM = 160 # try 175 to work for all distances
 
+PEN_UP_MAIN_ARM = 90
+PEN_DOWN_MAIN_ARM = 150
 
 LINE_FOLLOW_MAIN_ARM = 50
 LINE_FOLLOW_CAMERA_ARM = 0
@@ -78,6 +80,14 @@ def drop_object():
     sleep(2)
     #earlier it was 120
     set_all_servos(90, 180)
+
+def pen_up():
+    set_all_servos(PEN_UP_MAIN_ARM, 180)
+    sleep(0.5)
+
+def pen_down():
+    set_all_servos(PEN_DOWN_MAIN_ARM, 180)
+    sleep(0.5)
 
 if __name__ == "__main__" :
     make_camera_look_at_floor()
