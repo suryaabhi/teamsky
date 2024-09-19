@@ -14,6 +14,15 @@ DEBUG = os.getenv("DEBUG")
 API_BASE_URL = "https://roborumble-teamsky-2024.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview"
 headers = {"api-key": API_TOKEN}
 
+def fallback_answer(bb_no):
+    print(f"output error in bb{bb_no} returning fallback answer")
+    if bb_no == 1:
+        return {"found": False, "pick": {"color": "red", "shape": "square"}, "drop": {"color": "blue", "shape": "circle"}}
+    elif bb_no == 2:
+        return {"found": False, "path": "left"}
+    elif bb_no == 3:
+        return {"found": False, "characters": ["2", "T"]}
+
 def __encode_image(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     success, encoded_image = cv2.imencode('.png', image)
@@ -39,9 +48,7 @@ def __output_processor_bb1(res):
                 "shape": dropstmt.split()[2]
             }
     else:
-        answer["found"] = False
-    if DEBUG:
-        print(answer)
+        return fallback_answer(1)
     return answer
 
 def __output_processor_bb2(res):
@@ -54,10 +61,7 @@ def __output_processor_bb2(res):
     elif "straight" in res:
         answer["path"] = "straight"
     else:
-        answer["found"] = False
-        # select random path from "left" "right" "straight"
-        answer["path"] = random.choice(["left", "right", "straight"])
-    print(answer)
+        return fallback_answer(2)
     return answer
 
 def __output_processor_bb3(res):
@@ -66,10 +70,8 @@ def __output_processor_bb3(res):
         answer["found"] = True
         answer["characters"] = res.split()
     else:
-        answer["found"] = False
-        answer["characters"] = ["2", "T"]
-    
-    print(answer)
+        return fallback_answer(3)
+
     return answer
 
 def send_to_llm_bb1(image):
@@ -102,6 +104,9 @@ def send_to_llm_bb1(image):
     output = __callAzureOpenAI(payload)
     
     print(output)
+    
+    if output.json().get("error"):
+        return fallback_answer(1)
 
     airesponse = output["choices"][0]["message"]["content"]
 
@@ -138,6 +143,9 @@ def send_to_llm_bb2(image):
     output = __callAzureOpenAI(payload)
     
     print(output)
+    
+    if output.json().get("error"):
+        return fallback_answer(2)
 
     airesponse = output["choices"][0]["message"]["content"]
 
@@ -181,6 +189,9 @@ def send_to_llm_bb3(image):
     output = __callAzureOpenAI(payload)
     
     print(output)
+    
+    if output.json().get("error"):
+        return fallback_answer(3)
 
     airesponse = output["choices"][0]["message"]["content"]
 
