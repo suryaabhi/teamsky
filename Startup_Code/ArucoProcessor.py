@@ -28,6 +28,15 @@ def processReadBillboard3(bot: Bot):
 def processLane(bot):
     bot.execute_lane()
 
+def processPickAndWrite(bot, dir):
+    bot.seek_and_pick_object("left", True)
+    sleep(2)
+
+    bot.write()
+    sleep(1)
+
+
+
 def processAruco(bot, aruco):
     # TODO: add visited 
     match aruco:
@@ -58,7 +67,11 @@ def processAruco(bot, aruco):
         case MarkerAction.READ_BILLBOARD_3:
             processReadBillboard3(bot)
             sleep(2)
-            
+
+        case MarkerAction.WRITE_LETTER:
+            processPickAndWrite(bot)
+            sleep(2)
+
         case _:
             print('No action')
             sleep(1)
