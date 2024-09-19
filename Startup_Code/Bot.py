@@ -28,6 +28,8 @@ class Bot:
         self.intersection_answer = None
 
         self.draw_answer = None
+
+        self.intersection
         
 
     def __rotateInDirection(self, dir, isSmall):
