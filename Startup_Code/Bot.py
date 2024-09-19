@@ -22,9 +22,9 @@ MARKER_OBJECT_COLOR = "red"
 MARKER_OBJECT_SHAPE = "square"
 
 #KRITIKA/VINIT
-PICK_OBJECT_FALLBACK_COLOR = "blue"
+PICK_OBJECT_FALLBACK_COLOR = "green"
 PICK_OBJECT_FALLBACK_SHAPE = "square"
-DROP_OBJECT_FALLBACK_COLOR = "green"
+DROP_OBJECT_FALLBACK_COLOR = "blue"
 DROP_OBJECT_FALLBACK_SHAPE = "circle"
 
 class Bot:
@@ -207,6 +207,7 @@ class Bot:
                             rotate_left_until_road_found()
                             sleep(1)
                         return
+                    return
                 
 
     def execute_lane(self):
