@@ -71,7 +71,7 @@ def stop(stop_servos=False):
 
 
 def move(motor1, motor2, motor3, motor4, speed=DEFAULT_SPEED):
-    move_motor(motors["front_left"], motor1, speed)
+    move_motor(motors["front_left"], motor1, speed * 1.35)
     move_motor(motors["front_right"], motor2, speed)
     move_motor(motors["rear_left"], motor3, speed)
     move_motor(motors["rear_right"], motor4, speed)
