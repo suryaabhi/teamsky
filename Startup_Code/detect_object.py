@@ -73,7 +73,6 @@ def detect_color_shape(image, color, shape, delta=20):
         display(image, contour, shape_detected, approx)
         
         if cx is not None and cy is not None and (shape_detected == shape):
-            delta = 20
             right = 320 + delta
             left = 320 - delta
             if (cx < right) and (cx > left):
