@@ -1,7 +1,7 @@
 from detect_object_new import detect_color_shape
 from time import sleep
 import cv2
-from Utils.PathMoverUtils import run_path_follower, is_path_found, rotate_right_until_road_found, rotate_left_until_road_found, turn_left, turn_right
+from Utils.PathMoverUtils import run_path_follower, is_path_found, rotate_right_until_road_found, rotate_left_until_road_found
 import llm
 import Utils.ServoUtils as ServoUtils
 import Utils.ImageUtils as ImageUtils
@@ -28,6 +28,8 @@ class Bot:
         self.intersection_answer = None
 
         self.draw_answer = None
+
+        self.intersection
         
 
     def __rotateInDirection(self, dir, isSmall):
@@ -87,11 +89,20 @@ class Bot:
         print(llm_resp)
         if not llm_resp["found"]:
             #TODO retry
+            self.moveForward(0.3)
+            self.pick_color= "green"
+            self.pick_shape = "circle"
+            self.drop_color = "green"
+            self.drop_shape= "square"
             return False
         self.pick_color = llm_resp["pick"]["color"]
         self.pick_shape = llm_resp["pick"]["shape"]
         self.drop_color = llm_resp["drop"]["color"]
         self.drop_shape = llm_resp["drop"]["shape"]
+        self.pick_color= "blue"
+        self.pick_shape = "circle"
+        self.drop_color = "green"
+        self.drop_shape= "square"
         sleep(0.5)
         self.moveForward(0.3)
         sleep(0.5)
@@ -197,8 +208,24 @@ class Bot:
                 
 
     def execute_lane(self):
+        self.intersection_answer = "right"
         if self.intersection_answer == "left":
-            turn_left()
+            MotorUtils.rotate_left(0.3)
+            sleep(0.5)
+            self.moveForward(1.8)
+            sleep(0.5)
+            rotate_left_until_road_found()
+            sleep(0.5)
+        elif self.intersection_answer == "right":
+            MotorUtils.rotate_right(0.3)
+            sleep(0.5)
+            self.moveForward(1.8)
+            sleep(0.5)
+            rotate_right_until_road_found()
+            sleep(0.5)
+        else:
+            self.moveForward(0.8)
+
         
 
     def move_to_answer_path(self):
@@ -210,7 +237,7 @@ class Bot:
     def seek_and_pick_object(self, rotate_direction):
         object_color = self.pick_color
         object_shape = self.pick_shape
-        # object_color = "green"
+        # object_color = "red"
         # object_shape = "square"
         ServoUtils.reset_arms(True)
         sleep(2)
@@ -243,6 +270,8 @@ class Bot:
     def seek_and_drop_object(self, rotate_direction):
         object_color = self.drop_color
         object_shape = self.drop_shape
+        # object_color = "blue"
+        # object_shape = "square"
         ServoUtils.reset_arms()
         sleep(2)
         ServoUtils.make_camera_look_at_marker()
