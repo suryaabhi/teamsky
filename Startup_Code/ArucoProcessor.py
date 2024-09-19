@@ -29,7 +29,6 @@ def processAruco(bot, aruco):
     # TODO: add visited 
     match aruco:
         case MarkerAction.READ_BILLBOARD_1:
-            # sleep(3)
             processReadBillBoard1(bot)
             sleep(2)
         
@@ -46,7 +45,6 @@ def processAruco(bot, aruco):
             processDropObject(bot, "right")
 
         case MarkerAction.READ_BILLBOARD_2:
-            # sleep(3)
             processReadBillboard2(bot)
             sleep(2)
 
