@@ -7,9 +7,9 @@ def Run():
     bot = Bot()
 
     while True:
-        aruco = bot.follow_line()
-        sleep(1)
-        processAruco(bot, aruco)
+        bot.read_billboard_1()
+        # sleep(1)
+        #processAruco(bot, aruco)
     
 
 if __name__ == "__main__":

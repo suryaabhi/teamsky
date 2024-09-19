@@ -58,7 +58,7 @@ class Bot:
         return shape in ["square", "circle"]
     
     def isValidColor(self, color):
-        return color  in ["red", "blue", "green" s]
+        return color  in ["red", "blue", "green" ]
 
             
     def pickpen(self):
